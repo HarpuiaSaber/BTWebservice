@@ -24,6 +24,9 @@ public class Method implements Serializable {
 	@Column(name = "month")
 	private Integer month;
 
+	@Column(name = "isDeleted")
+	private Boolean isDeleted;
+
 	public Integer getId() {
 		return id;
 	}
@@ -46,6 +49,14 @@ public class Method implements Serializable {
 
 	public void setMonth(Integer month) {
 		this.month = month;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }
