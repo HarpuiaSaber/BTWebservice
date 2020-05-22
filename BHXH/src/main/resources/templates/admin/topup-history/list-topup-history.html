@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="admin/common/template">
+<head>
+<meta charset="UTF-8" />
+<title th:text="'Lịch Sử Nạp Thẻ'"></title>
+</head>
+<body>
+	<div layout:fragment="content" th:remove="tag">
+		<div class="row">
+			<div class="col-md-12">
+				<h3 class="title-5 m-b-35">Danh Sách Lịch Sử Thẻ Nạp</h3>
+				<div class="table-data__tool">
+					<div class="table-data__tool-left"></div>
+				</div>
+				<div class="table-responsive table-responsive-data2">
+					<table id="datatable" class="table table-data2">
+
+						<thead>
+							<tr>
+								<th></th>
+								<th th:text="'ID'"></th>
+								<th>Số Tiền</th>
+								<th>Tên Khách Hàng</th>
+								<th>Thời Gian Tạo</th>
+								<th th:text="#{text.option}"></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th><button id="delButt" class="text-danger"
+										data-toggle="tooltip" data-original-title="Xoá hết">
+										<i class="fa fa-trash"></i>
+									</button></th>
+								<th>ID</th>
+								<th>Số Tiền</th>
+								<th>Tên Khách Hàng</th>
+								<th>Thời Gian Tạo</th>
+								<th th:text="#{text.option}"></th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="confirm-delete" tabindex="-1"
+			role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header" th:text="'Bạn muốn xoá lịch sử nạp thẻ này?'"></div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							th:text="#{text.no}"></button>
+						<a class="btn btn-danger btn-ok" style="color: white;"
+							th:text="#{text.delete}"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="confirm-delete-multi" tabindex="-1"
+			role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header"
+						th:text="'Bạn muốn xoá các lịch sử nạp thẻ này?'"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							th:text="#{text.no}"></button>
+						<button class="btn btn-danger btn-ok" style="color: white;"
+							th:text="#{text.delete}"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="please-select-dialog" tabindex="-1"
+			role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">Vui lòng tích chọn các dòng để xoá?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							th:text="#{text.cancel}"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+		var vietnameseUrl = [[@{/user/vendor/datatables/Vietnamese.json}]];
+	    var url = [[@{/admin/topup-history/list}]];
+	    var delUrl = [[@{/admin/topup-history/delete}]];
+	    var delMultiUrl = [[@{/admin/topup-history/delete-multi}]];
+	    var csrf_token = [[${_csrf.token}]];
+	    var searchHolderText = 'Tìm theo tên';
+	    
+	    var id = "";
+	    var table;
+		$(document).ready(function() {
+			table = $('#datatable').DataTable( {
+				"processing": true,
+		        "serverSide": true,
+		        "ajax": {
+		        	type:"POST",
+		            url: url,
+		            dataType: "json",
+		            contentType: "application/json",
+		            headers: {'X-CSRF-TOKEN': csrf_token},
+		            data: function (d) {
+		            	return JSON.stringify( d );
+		            }
+		        },
+		        "lengthMenu": [10, 25, 50, 100, 200],
+		        "columns": [
+		            { "data": "id" },
+		            { "data": "id" },
+		            { "data": "amount" },
+		            { "data": "customerName" },
+		            { "data": "createdDate" },
+		            { "data": "id" }
+		        ],
+		        "order": [1, "desc"],
+		        "select": {
+		        	'style': 'multi'
+		        	
+		        },
+		        "createdRow": function ( row, data, index ) {
+		            $(row).addClass('tr-shadow');
+		        },
+		        "columnDefs": [
+				{
+				    'targets': 0,
+				    'checkboxes': {
+				       'selectRow': true
+				    }
+				 },
+				 {
+					"render": function ( data, type, row ) {
+				         return formatNumber(data);
+	                 },
+   	                "targets": 2
+   	             },
+				 {
+					"render": function ( data, type, row ) {
+						 var content = '<div class="table-data-feature">'
+		                    +'<button class="item" data-placement="top" data-toggle="modal" data-target="#confirm-delete" data-json="' + encodeURI(JSON.stringify(row)) +'"><i class="zmdi zmdi-delete"></i></button></div>';
+				         return content;
+	                 },
+	                "orderable": false,
+   	                "targets": 5
+   	            }
+		        ],
+		        "language": {
+		            "url": vietnameseUrl,
+		            "searchPlaceholder": searchHolderText
+		        },
+		        "initComplete": function(settings, json) {
+		        },
+		        "drawCallback": function(){
+		        	table.rows().every(function() {
+	        		  this.nodes().to$().after('<tr class="spacer"></tr>')
+	        		})
+		        }
+	        });
+			
+			$('#datatable tbody').on( 'click', 'tr', function () {
+				var data = table.row($(this)).data();
+				id = data.id;
+		    });
+			
+			$('#confirm-delete').on('click', '.btn-ok', function(e) {
+			  	var $modalDiv = $(e.delegateTarget);
+				  $.get(delUrl + '/' + id).then(function() {
+				     $modalDiv.modal('hide');
+				     table.draw();
+				  }, function() {
+					  $modalDiv.find('div.modal-body').html('<b>Danh mục đang sử dụng!</b>');
+				  });
+			});
+			//triggered when modal is about to be shown
+			$('#confirm-delete').on('show.bs.modal', function(e) {
+				var jsonStr = $(e.relatedTarget).data('json');
+			  	var row = JSON.parse(decodeURI(jsonStr));
+			    //populate the textbox
+			    $(e.currentTarget).find('div.modal-body').html('<strong>' + row.amount	  + '</strong>');
+			});
+			// Handle form submission event
+			var rowIds = [];
+			$('#delButt').on('click', function(e){
+			    var rows_selected = table.column(0).checkboxes.selected();
+			    rowIds = [];
+			    // Iterate over all selected checkboxes
+			    $.each(rows_selected, function(index, rowId){
+			       // Create a hidden element
+			       rowIds.push(rowId);
+			    });
+			    if (rows_selected.length == 0) {
+			    	$("#please-select-dialog").modal('show');
+			    } else {
+			    	$("#confirm-delete-multi").modal('show');
+			    }
+		 	});
+			$('#confirm-delete-multi').on('click', '.btn-ok', function(e) {
+				var $modalDiv = $(e.delegateTarget);
+				$.get(delMultiUrl + '/' + rowIds.toString()).then(function() {
+					 $modalDiv.modal('hide');
+					 table.draw();
+			    });
+			});
+		});
+	</script>
+	</div>
+</body>
+</html>

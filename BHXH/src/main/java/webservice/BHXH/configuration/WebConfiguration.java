@@ -20,12 +20,18 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/home").permitAll().antMatchers("/admin/**").hasAnyRole("ADMIN").and()
-				.formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password")
-				.loginProcessingUrl("/auth").defaultSuccessUrl("/dashboard").failureUrl("/login?e=1").and().logout()
-				.logoutUrl("/logout").logoutSuccessUrl("/login").deleteCookies("JSESSIONID").and().exceptionHandling()
-				.accessDeniedPage("/error/403.html").and().rememberMe().rememberMeCookieName("app-remember-me")
-				.tokenValiditySeconds(2592000);
+		http.authorizeRequests().antMatchers("/")
+				.permitAll();/*
+								 * .antMatchers("/admin/**").hasAnyRole("ADMIN").and()
+								 * .formLogin().loginPage("/login").usernameParameter("username").
+								 * passwordParameter("password")
+								 * .loginProcessingUrl("/auth").defaultSuccessUrl("/dashboard").failureUrl(
+								 * "/login?e=1").and().logout()
+								 * .logoutUrl("/logout").logoutSuccessUrl("/login").deleteCookies("JSESSIONID").
+								 * and().exceptionHandling()
+								 * .accessDeniedPage("/error/403.html").and().rememberMe().rememberMeCookieName(
+								 * "app-remember-me") .tokenValiditySeconds(2592000);
+								 */
 	}
 
 }

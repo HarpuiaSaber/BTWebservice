@@ -10,7 +10,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public abstract class BaseDaoImpl<T, K> {
+import webservice.BHXH.dao.BaseDao;
+
+public abstract class BaseDaoImpl<T, K> implements BaseDao<T, K>{
 
 	private Class<T> type;
 

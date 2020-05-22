@@ -12,7 +12,7 @@ public class ApiConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors().and().antMatcher("/api/**").authorizeRequests().antMatchers("/api/admin/**")
-				.hasAnyRole("ADMIN").antMatchers("/api/member/**").authenticated().anyRequest().permitAll();
+				.hasAnyRole("ADMIN").antMatchers("/api/user/**").authenticated().anyRequest().permitAll();
 	}
 
 }
