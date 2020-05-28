@@ -28,8 +28,8 @@ public class Insurance implements Serializable {
 	@Column(name = "status")
 	private Integer status;
 
-	@Column(name = "userName")
-	private Long userName;
+	@Column(name = "idUser")
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idMethod")
@@ -59,12 +59,12 @@ public class Insurance implements Serializable {
 		this.status = status;
 	}
 
-	public Long getUserName() {
-		return userName;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserName(Long userName) {
-		this.userName = userName;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Method getMethod() {

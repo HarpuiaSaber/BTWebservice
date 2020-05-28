@@ -23,26 +23,23 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "userName")
+	@Column(name = "userName", unique = true)
 	private String userName;
 
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "phone", unique = true)
+	@Column(name = "phone")
 	private String phone;
 
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "contactPerson")
-	private String contactPerson;
-
 	@Column(name = "isActive")
 	private Boolean isActive;
 
-	@Column(name = "identityCard")
-	private Long identityCard;
+	@Column(name = "identity")
+	private Long identity;
 
 	@Column(name = "dob")
 	private Date dob;
@@ -98,14 +95,6 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getContactPerson() {
-		return contactPerson;
-	}
-
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
-	}
-
 	public Boolean getIsActive() {
 		return isActive;
 	}
@@ -114,12 +103,12 @@ public class User implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public Long getIdentityCard() {
-		return identityCard;
+	public Long getIdentity() {
+		return identity;
 	}
 
-	public void setIdentityCard(Long identityCard) {
-		this.identityCard = identityCard;
+	public void setIdentity(Long identity) {
+		this.identity = identity;
 	}
 
 	public Date getDob() {

@@ -3,12 +3,14 @@ package webservice.BHXH.dao;
 import java.util.List;
 
 import webservice.BHXH.entity.Insurance;
-import webservice.BHXH.pagination.GridParam;
+import webservice.BHXH.model.search.InsuranceSearch;
 
 public interface InsuranceDao extends BaseDao<Insurance, Long> {
 
-	List<Insurance> find(GridParam gridParam);
+	List<Insurance> search(InsuranceSearch search);
+	
+	List<Insurance> searchWithPaging(InsuranceSearch search);
 
-	long count(GridParam gridParam);
+	long countTotal(InsuranceSearch search);
 
 }
