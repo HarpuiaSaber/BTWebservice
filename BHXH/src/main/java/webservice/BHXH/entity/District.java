@@ -22,7 +22,7 @@ public class District implements Serializable {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idProvince")
+	@JoinColumn(name = "province_id")
 	private Province province;
 
 	public String getId() {

@@ -39,7 +39,7 @@ public class RetirementMode implements Serializable {
 	@Column(name = "time")
 	private String time;
 
-	@Column(name = "isDeleted")
+	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 
 	public Long getId() {

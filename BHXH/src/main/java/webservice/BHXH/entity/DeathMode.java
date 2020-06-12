@@ -27,7 +27,7 @@ public class DeathMode implements Serializable {
 	@Column(name = "year")
 	private Double year;
 
-	@Column(name = "isDeleted")
+	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 
 	public Long getId() {

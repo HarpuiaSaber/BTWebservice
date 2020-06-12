@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import webservice.BHXH.dao.UserDao;
-import webservice.BHXH.entity.Role;
 import webservice.BHXH.entity.User;
 import webservice.BHXH.entity.Village;
+import webservice.BHXH.enums.Role;
 import webservice.BHXH.model.dto.UserDto;
 import webservice.BHXH.service.UserService;
 import webservice.BHXH.utils.DateTimeUtils;
@@ -25,9 +25,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void add(UserDto t) {
 		User user = toEntity(t);
-		Role role = new Role();
-		role.setId(2L);
-		user.setRole(role);
+		user.setRole(Role.USER);
 		userDao.add(user);
 		t.setId(user.getId());
 
@@ -71,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	User toEntity(UserDto dto) {
 		User user = new User();
 		user.setName(dto.getName());
-		user.setUserName(dto.getUserName());
+		user.setUsername(dto.getUsername());
 		user.setPassword(dto.getPassword());
 		user.setGender(dto.getGender());
 		user.setDob(DateTimeUtils.parseDate(dto.getDob(), DateTimeUtils.DD_MM_YYYY));
@@ -88,10 +86,10 @@ public class UserServiceImpl implements UserService {
 		UserDto dto = new UserDto();
 		dto.setId(user.getId());
 		dto.setName(user.getName());
-		dto.setUserName(user.getUserName());
+		dto.setUsername(user.getUsername());
 		dto.setPassword(user.getPassword());
 		dto.setGender(user.getGender());
-		dto.setRoleId(user.getRole().getId());
+		dto.setRole(user.getRole());
 		dto.setDob(DateTimeUtils.formatDate(user.getDob(), DateTimeUtils.DD_MM_YYYY));
 		dto.setIdentity(user.getIdentity());
 		dto.setIsActive(user.getIsActive());

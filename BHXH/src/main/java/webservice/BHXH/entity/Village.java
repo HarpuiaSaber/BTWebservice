@@ -22,7 +22,7 @@ public class Village implements Serializable {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idDistrict")
+	@JoinColumn(name = "district_id")
 	private District district;
 
 	public String getId() {

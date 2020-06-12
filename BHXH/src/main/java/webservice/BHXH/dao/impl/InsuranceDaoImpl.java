@@ -38,13 +38,13 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 
 		// add predicate
 		List<Predicate> predicates = new ArrayList<>();
-		if (search.getVillageId() != null) {
+		if (StringUtils.isNotBlank(search.getVillageId())) {
 			Predicate predicate = criteriaBuilder.equal(village.get("id"), search.getVillageId());
 			predicates.add(predicate);
-		} else if (search.getDistrictId() != null) {
+		} else if (StringUtils.isNotBlank(search.getDistrictId())) {
 			Predicate predicate = criteriaBuilder.equal(district.get("id"), search.getDistrictId());
 			predicates.add(predicate);
-		} else if (search.getProvinceId() != null) {
+		} else if (StringUtils.isNotBlank(search.getProvinceId())) {
 			Predicate predicate = criteriaBuilder.equal(province.get("id"), search.getProvinceId());
 			predicates.add(predicate);
 		}
@@ -52,7 +52,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 			Predicate predicate = criteriaBuilder.equal(user.get("identity"), search.getIdentity());
 			predicates.add(predicate);
 		}
-		if (search.getName() != null) {
+		if (StringUtils.isNotBlank(search.getName())) {
 			Predicate predicate = criteriaBuilder.equal(user.get("name"), search.getName());
 			predicates.add(predicate);
 		}
@@ -105,13 +105,13 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 
 		// add predicate
 		List<Predicate> predicates = new ArrayList<>();
-		if (search.getVillageId() != null) {
+		if (StringUtils.isNotBlank(search.getVillageId())) {
 			Predicate predicate = criteriaBuilder.equal(village.get("id"), search.getVillageId());
 			predicates.add(predicate);
-		} else if (search.getDistrictId() != null) {
+		} else if (StringUtils.isNotBlank(search.getDistrictId())) {
 			Predicate predicate = criteriaBuilder.equal(district.get("id"), search.getDistrictId());
 			predicates.add(predicate);
-		} else if (search.getProvinceId() != null) {
+		} else if (StringUtils.isNotBlank(search.getProvinceId())) {
 			Predicate predicate = criteriaBuilder.equal(province.get("id"), search.getProvinceId());
 			predicates.add(predicate);
 		}
@@ -119,7 +119,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 			Predicate predicate = criteriaBuilder.equal(user.get("identity"), search.getIdentity());
 			predicates.add(predicate);
 		}
-		if (search.getName() != null) {
+		if (StringUtils.isNotBlank(search.getName())) {
 			Predicate predicate = criteriaBuilder.equal(user.get("name"), search.getName());
 			predicates.add(predicate);
 		}
@@ -177,13 +177,13 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 
 		// add predicate
 		List<Predicate> predicates = new ArrayList<>();
-		if (search.getVillageId() != null) {
+		if (StringUtils.isNotBlank(search.getVillageId())) {
 			Predicate predicate = criteriaBuilder.equal(village.get("id"), search.getVillageId());
 			predicates.add(predicate);
-		} else if (search.getDistrictId() != null) {
+		} else if (StringUtils.isNotBlank(search.getDistrictId())) {
 			Predicate predicate = criteriaBuilder.equal(district.get("id"), search.getDistrictId());
 			predicates.add(predicate);
-		} else if (search.getProvinceId() != null) {
+		} else if (StringUtils.isNotBlank(search.getProvinceId())) {
 			Predicate predicate = criteriaBuilder.equal(province.get("id"), search.getProvinceId());
 			predicates.add(predicate);
 		}
@@ -191,7 +191,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 			Predicate predicate = criteriaBuilder.equal(user.get("identity"), search.getIdentity());
 			predicates.add(predicate);
 		}
-		if (search.getName() != null) {
+		if (StringUtils.isNotBlank(search.getName())) {
 			Predicate predicate = criteriaBuilder.equal(user.get("name"), search.getName());
 			predicates.add(predicate);
 		}

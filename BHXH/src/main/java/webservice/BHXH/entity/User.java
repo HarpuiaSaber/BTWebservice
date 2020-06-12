@@ -5,14 +5,18 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import webservice.BHXH.enums.Gender;
+import webservice.BHXH.enums.Role;
 
 @Entity
 @Table(name = "user")
@@ -23,11 +27,27 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "userName", unique = true)
-	private String userName;
+	@Column(name = "username", unique = true)
+	private String username;
 
 	@Column(name = "password")
 	private String password;
+
+	public Double getBaseSalary() {
+		return baseSalary;
+	}
+
+	public void setBaseSalary(Double baseSalary) {
+		this.baseSalary = baseSalary;
+	}
+
+	public SupportType getSupportType() {
+		return supportType;
+	}
+
+	public void setSupportType(SupportType supportType) {
+		this.supportType = supportType;
+	}
 
 	@Column(name = "phone")
 	private String phone;
@@ -35,7 +55,7 @@ public class User implements Serializable {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "isActive")
+	@Column(name = "is_active")
 	private Boolean isActive;
 
 	@Column(name = "identity")
@@ -45,15 +65,23 @@ public class User implements Serializable {
 	private Date dob;
 
 	@Column(name = "gender")
-	private String gender;
+	@Enumerated(EnumType.ORDINAL)
+	private Gender gender;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idRole")
+	@JoinColumn(name = "role")
+	@Enumerated(EnumType.ORDINAL)
 	private Role role;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idVillage")
+	@JoinColumn(name = "village_id")
 	private Village village;
+
+	@Column(name = "base_salary")
+	private Double baseSalary;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "support_type")
+	private SupportType supportType;
 
 	public Long getId() {
 		return id;
@@ -63,12 +91,12 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -119,11 +147,11 @@ public class User implements Serializable {
 		this.dob = dob;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

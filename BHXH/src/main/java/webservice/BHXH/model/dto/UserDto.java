@@ -2,20 +2,23 @@ package webservice.BHXH.model.dto;
 
 import java.io.Serializable;
 
+import webservice.BHXH.enums.Gender;
+import webservice.BHXH.enums.Role;
+
 public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-	private String userName;
+	private String username;
 	private String password;
 	private String phone;
 	private String name;
 	private Boolean isActive;
 	private Long identity;
 	private String dob;
-	private String gender;
-	private Long roleId;
+	private Gender gender;
+	private Role role;
 	private String villageId;
 
 	public long getId() {
@@ -26,12 +29,12 @@ public class UserDto implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -82,20 +85,20 @@ public class UserDto implements Serializable {
 		this.dob = dob;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
-	public Long getRoleId() {
-		return roleId;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public String getVillageId() {

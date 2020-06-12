@@ -22,14 +22,14 @@ public class PaymentHistory implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "idInsurance")
+	@JoinColumn(name = "insurance_id")
 	private Insurance insurance;
 
 	@Column(name = "time")
 	private Date time;
 
-	@Column(name = "idTransaction")
-	private Integer idTransaction;
+	@Column(name = "transaction_id")
+	private Integer transactionId;
 
 	@Column(name = "bank")
 	private String bank;
@@ -61,12 +61,12 @@ public class PaymentHistory implements Serializable {
 		this.time = time;
 	}
 
-	public Integer getIdTransaction() {
-		return idTransaction;
+	public Integer getTransactionId() {
+		return transactionId;
 	}
 
-	public void setIdTransaction(Integer idTransaction) {
-		this.idTransaction = idTransaction;
+	public void setTransactionId(Integer transactionId) {
+		this.transactionId = transactionId;
 	}
 
 	public String getBank() {
