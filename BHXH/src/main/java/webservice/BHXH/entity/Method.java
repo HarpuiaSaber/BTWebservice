@@ -24,7 +24,7 @@ public class Method implements Serializable {
 	@Column(name = "month")
 	private Integer month;
 
-	@Column(name = "isDeleted")
+	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 
 	public Integer getId() {

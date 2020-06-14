@@ -1,6 +1,7 @@
 package webservice.BHXH.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,11 +9,16 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import webservice.BHXH.dao.InsuranceDao;
 import webservice.BHXH.dao.UserDao;
+import webservice.BHXH.entity.Insurance;
+import webservice.BHXH.entity.SupportType;
 import webservice.BHXH.entity.User;
 import webservice.BHXH.entity.Village;
 import webservice.BHXH.enums.Role;
+import webservice.BHXH.exception.InternalServerException;
 import webservice.BHXH.model.dto.UserDto;
+import webservice.BHXH.model.dto.UserPaymentMoneyDto;
 import webservice.BHXH.service.UserService;
 import webservice.BHXH.utils.DateTimeUtils;
 
@@ -21,6 +27,8 @@ import webservice.BHXH.utils.DateTimeUtils;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private InsuranceDao insuranceDao;
 
 	@Override
 	public void add(UserDto t) {
@@ -96,5 +104,41 @@ public class UserServiceImpl implements UserService {
 		dto.setPhone(user.getPhone());
 		dto.setVillageId(user.getVillage().getId());
 		return dto;
+	}
+
+	@Override
+	public UserPaymentMoneyDto getPaymentMoney(Long userId) {
+		User user = userDao.getById(userId);
+		if (user != null) {
+			Insurance insurance = insuranceDao.getByUser(userId);
+			UserPaymentMoneyDto userPaymentMoney = new UserPaymentMoneyDto();
+			userPaymentMoney.setUserId(userId);
+
+			int month = insurance.getMethod().getMonth();
+			double baseSalary = user.getBaseSalary();
+			SupportType supportType = user.getSupportType();
+			double income = supportType.getIncome();
+			int percent = supportType.getPercent();
+
+			userPaymentMoney.setMonth(month);
+			userPaymentMoney.setPaymentMoney((income + baseSalary) * month * 22 / 100);
+			userPaymentMoney.setSupportMoney(income * percent * month * 22 / 100);
+			userPaymentMoney.setTotalMoney(userPaymentMoney.getPaymentMoney() - userPaymentMoney.getSupportMoney());
+			return userPaymentMoney;
+		}
+		return null;
+	}
+
+	@Override
+	public void setBaseSalary(Long userId, Double baseSalary) throws InternalServerException{
+		User user = userDao.getById(userId);
+		if (user != null) {	
+			Date now = new Date();
+			//check payment history have record before now
+			//if true: paid set baseSalary
+			//else throw new InternalServerException("Chưa đóng bảo hiểm trước đó"); 
+		} else {
+			throw new InternalServerException("Không tìm thấy user");
+		}
 	}
 }

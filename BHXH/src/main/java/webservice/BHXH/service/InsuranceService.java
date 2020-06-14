@@ -12,4 +12,5 @@ public interface InsuranceService extends BaseService<InsuranceDto, Long> {
 	List<InsuranceDto> searchWithPaging(InsuranceSearch search);
 
 	long countTotal(InsuranceSearch search);
+	
 }

@@ -30,6 +30,9 @@ public class SupportType implements Serializable {
 	@Column(name = "percent")
 	private Integer percent;
 
+	@Column(name = "income")
+	private Double income;
+
 	public Long getId() {
 		return id;
 	}
@@ -52,6 +55,14 @@ public class SupportType implements Serializable {
 
 	public void setPercent(Integer percent) {
 		this.percent = percent;
+	}
+
+	public Double getIncome() {
+		return income;
+	}
+
+	public void setIncome(Double income) {
+		this.income = income;
 	}
 
 }

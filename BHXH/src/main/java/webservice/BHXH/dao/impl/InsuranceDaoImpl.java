@@ -9,8 +9,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Repository;
 
 import webservice.BHXH.dao.InsuranceDao;
 import webservice.BHXH.entity.District;
@@ -21,15 +23,17 @@ import webservice.BHXH.entity.Village;
 import webservice.BHXH.model.search.InsuranceSearch;
 import webservice.BHXH.utils.DateTimeUtils;
 
+@Repository
+@Transactional
 public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements InsuranceDao {
 
 	@Override
 	public List<Insurance> search(InsuranceSearch search) {
-		//create returns the data type of critetia query
+		// create returns the data type of critetia query
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Insurance> criteriaQuery = criteriaBuilder.createQuery(Insurance.class);
 
-		//from and join entity
+		// from and join entity
 		Root<Insurance> root = criteriaQuery.from(Insurance.class);
 		Join<Insurance, User> user = root.join("user");
 		Join<User, Village> village = user.join("village");
@@ -92,11 +96,11 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 
 	@Override
 	public List<Insurance> searchWithPaging(InsuranceSearch search) {
-		//create returns the data type of critetia query
+		// create returns the data type of critetia query
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Insurance> criteriaQuery = criteriaBuilder.createQuery(Insurance.class);
-		
-		//from and join entity
+
+		// from and join entity
 		Root<Insurance> root = criteriaQuery.from(Insurance.class);
 		Join<Insurance, User> user = root.join("user");
 		Join<User, Village> village = user.join("village");
@@ -164,11 +168,11 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 
 	@Override
 	public long countTotal(InsuranceSearch search) {
-		//create returns the data type of critetia query
+		// create returns the data type of critetia query
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-		
-		//from and join entity
+
+		// from and join entity
 		Root<Insurance> root = criteriaQuery.from(Insurance.class);
 		Join<Insurance, User> user = root.join("user");
 		Join<User, Village> village = user.join("village");
@@ -222,6 +226,29 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 
 		// create query
 		TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery.select(criteriaBuilder.count(root)));
+		return typedQuery.getSingleResult();
+	}
+
+	@Override
+	public Insurance getByUser(Long userId) {
+		// create returns the data type of critetia query
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Insurance> criteriaQuery = criteriaBuilder.createQuery(Insurance.class);
+
+		// from and join entity
+		Root<Insurance> root = criteriaQuery.from(Insurance.class);
+		Join<Insurance, User> user = root.join("user");
+
+		// add predicate
+		List<Predicate> predicates = new ArrayList<>();
+		if (userId != null) {
+			Predicate predicate = criteriaBuilder.equal(user.get("identity"), userId);
+			predicates.add(predicate);
+		}
+
+		// create query
+		TypedQuery<Insurance> typedQuery = entityManager.createQuery(criteriaQuery.select(root));
+
 		return typedQuery.getSingleResult();
 	}
 

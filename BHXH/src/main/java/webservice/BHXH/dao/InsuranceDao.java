@@ -12,5 +12,7 @@ public interface InsuranceDao extends BaseDao<Insurance, Long> {
 	List<Insurance> searchWithPaging(InsuranceSearch search);
 
 	long countTotal(InsuranceSearch search);
+	
+	Insurance getByUser(Long userId);
 
 }

@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class InsuranceController {
 	@GetMapping("/user/getInurance")
 	public String getInurance() {
-		return "client/user/login.html"; //return path of html page
+		return "admin/fixcost/list-fixcost.html"; //return path of html page
 	}
 }
