@@ -21,7 +21,7 @@ public class District implements Serializable {
 	@Column(name = "name")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "province_id")
 	private Province province;
 

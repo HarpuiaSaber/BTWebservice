@@ -3,17 +3,7 @@ package webservice.BHXH.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import webservice.BHXH.enums.Gender;
 import webservice.BHXH.enums.Role;
@@ -21,154 +11,153 @@ import webservice.BHXH.enums.Role;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "username", unique = true)
-	private String username;
+    @Column(name = "username", unique = true)
+    private String username;
 
-	@Column(name = "password")
-	private String password;
+    @Column(name = "password")
+    private String password;
 
-	public Double getBaseSalary() {
-		return baseSalary;
-	}
+    @Column(name = "phone")
+    private String phone;
 
-	public void setBaseSalary(Double baseSalary) {
-		this.baseSalary = baseSalary;
-	}
+    @Column(name = "name")
+    private String name;
 
-	public SupportType getSupportType() {
-		return supportType;
-	}
+    @Column(name = "enabled")
+    private Boolean enabled;
 
-	public void setSupportType(SupportType supportType) {
-		this.supportType = supportType;
-	}
+    @Column(name = "identity")
+    private Long identity;
 
-	@Column(name = "phone")
-	private String phone;
+    @Column(name = "dob")
+    private Date dob;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "gender")
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
 
-	@Column(name = "is_active")
-	private Boolean isActive;
+    @Column(name = "role")
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
-	@Column(name = "identity")
-	private Long identity;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "village_id")
+    private Village village;
 
-	@Column(name = "dob")
-	private Date dob;
+    @Column(name = "base_salary")
+    private Long baseSalary;
 
-	@Column(name = "gender")
-	@Enumerated(EnumType.ORDINAL)
-	private Gender gender;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "support_type")
+    private SupportType supportType;
 
-	@JoinColumn(name = "role")
-	@Enumerated(EnumType.ORDINAL)
-	private Role role;
+    public Long getId() {
+        return id;
+    }
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "village_id")
-	private Village village;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Column(name = "base_salary")
-	private Double baseSalary;
+    public String getUsername() {
+        return username;
+    }
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "support_type")
-	private SupportType supportType;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getIdentity() {
+        return identity;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setIdentity(Long identity) {
+        this.identity = identity;
+    }
 
-	public Boolean getIsActive() {
-		return isActive;
-	}
+    public Date getDob() {
+        return dob;
+    }
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
 
-	public Long getIdentity() {
-		return identity;
-	}
+    public Gender getGender() {
+        return gender;
+    }
 
-	public void setIdentity(Long identity) {
-		this.identity = identity;
-	}
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
-	public Date getDob() {
-		return dob;
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-	public Gender getGender() {
-		return gender;
-	}
+    public Village getVillage() {
+        return village;
+    }
 
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
+    public void setVillage(Village village) {
+        this.village = village;
+    }
 
-	public Role getRole() {
-		return role;
-	}
+    public Long getBaseSalary() {
+        return baseSalary;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public void setBaseSalary(Long baseSalary) {
+        this.baseSalary = baseSalary;
+    }
 
-	public Village getVillage() {
-		return village;
-	}
+    public SupportType getSupportType() {
+        return supportType;
+    }
 
-	public void setVillage(Village village) {
-		this.village = village;
-	}
-
+    public void setSupportType(SupportType supportType) {
+        this.supportType = supportType;
+    }
 }

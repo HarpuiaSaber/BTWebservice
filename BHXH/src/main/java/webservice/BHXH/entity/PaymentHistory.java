@@ -3,86 +3,90 @@ package webservice.BHXH.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user_payment_history")
 public class PaymentHistory implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "insurance_id")
-	private Insurance insurance;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "insurance_id")
+    private Insurance insurance;
 
-	@Column(name = "time")
-	private Date time;
+    @Column(name = "time")
+    private Date time;
 
-	@Column(name = "transaction_id")
-	private Integer transactionId;
+    @Column(name = "transaction_id")
+    private Integer transactionId;
 
-	@Column(name = "bank")
-	private String bank;
+    @JoinColumn(name = "method_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Method method;
 
-	@Column(name = "cost")
-	private Double cost;
+    @Column(name = "cost")
+    private Double cost;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "base_salary")
+    private Long baseSalary;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Insurance getInsurance() {
-		return insurance;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setInsurance(Insurance insurance) {
-		this.insurance = insurance;
-	}
+    public Insurance getInsurance() {
+        return insurance;
+    }
 
-	public Date getTime() {
-		return time;
-	}
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
+    }
 
-	public void setTime(Date time) {
-		this.time = time;
-	}
+    public Date getTime() {
+        return time;
+    }
 
-	public Integer getTransactionId() {
-		return transactionId;
-	}
+    public void setTime(Date time) {
+        this.time = time;
+    }
 
-	public void setTransactionId(Integer transactionId) {
-		this.transactionId = transactionId;
-	}
+    public Integer getTransactionId() {
+        return transactionId;
+    }
 
-	public String getBank() {
-		return bank;
-	}
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
+    }
 
-	public void setBank(String bank) {
-		this.bank = bank;
-	}
+    public Method getMethod() {
+        return method;
+    }
 
-	public Double getCost() {
-		return cost;
-	}
+    public void setMethod(Method method) {
+        this.method = method;
+    }
 
-	public void setCost(Double cost) {
-		this.cost = cost;
-	}
+    public Double getCost() {
+        return cost;
+    }
 
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public Long getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(Long baseSalary) {
+        this.baseSalary = baseSalary;
+    }
 }

@@ -8,5 +8,5 @@ public interface UserService extends BaseService<UserDto, Long> {
 
 	UserPaymentMoneyDto getPaymentMoney(Long userId);
 	
-	void setBaseSalary(Long userId, Double baseSalary) throws InternalServerException;
+	void setBaseSalary(Long userId, Long baseSalary) throws InternalServerException;
 }

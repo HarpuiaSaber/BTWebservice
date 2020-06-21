@@ -4,4 +4,5 @@ import webservice.BHXH.entity.User;
 
 public interface UserDao extends BaseDao<User, Long> {
 
+    User getByUsername(String username);
 }

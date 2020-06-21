@@ -70,7 +70,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 		}
 		if (StringUtils.isNotBlank(search.getFromDate())) {
 			try {
-				Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(root.get("createdDate"),
+				Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(root.get("regDate"),
 						DateTimeUtils.parseDate(search.getFromDate(), DateTimeUtils.DD_MM_YYYY));
 				predicates.add(predicate);
 			} catch (RuntimeException ignored) {
@@ -78,12 +78,13 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 		}
 		if (StringUtils.isNotBlank(search.getToDate())) {
 			try {
-				Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("createdDate"),
+				Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("regDate"),
 						DateTimeUtils.parseDate(search.getToDate(), DateTimeUtils.DD_MM_YYYY));
 				predicates.add(predicate);
 			} catch (RuntimeException ignored) {
 			}
 		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
 		// order
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("regDate")));
@@ -137,7 +138,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 		}
 		if (StringUtils.isNotBlank(search.getFromDate())) {
 			try {
-				Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(root.get("createdDate"),
+				Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(root.get("regDate"),
 						DateTimeUtils.parseDate(search.getFromDate(), DateTimeUtils.DD_MM_YYYY));
 				predicates.add(predicate);
 			} catch (RuntimeException ignored) {
@@ -145,12 +146,13 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 		}
 		if (StringUtils.isNotBlank(search.getToDate())) {
 			try {
-				Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("createdDate"),
+				Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("regDate"),
 						DateTimeUtils.parseDate(search.getToDate(), DateTimeUtils.DD_MM_YYYY));
 				predicates.add(predicate);
 			} catch (RuntimeException ignored) {
 			}
 		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
 		// order
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("regDate")));
@@ -209,7 +211,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 		}
 		if (StringUtils.isNotBlank(search.getFromDate())) {
 			try {
-				Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(root.get("createdDate"),
+				Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(root.get("regDate"),
 						DateTimeUtils.parseDate(search.getFromDate(), DateTimeUtils.DD_MM_YYYY));
 				predicates.add(predicate);
 			} catch (RuntimeException ignored) {
@@ -217,12 +219,13 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 		}
 		if (StringUtils.isNotBlank(search.getToDate())) {
 			try {
-				Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("createdDate"),
+				Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("regDate"),
 						DateTimeUtils.parseDate(search.getToDate(), DateTimeUtils.DD_MM_YYYY));
 				predicates.add(predicate);
 			} catch (RuntimeException ignored) {
 			}
 		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
 		// create query
 		TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery.select(criteriaBuilder.count(root)));
@@ -245,6 +248,7 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
 			Predicate predicate = criteriaBuilder.equal(user.get("identity"), userId);
 			predicates.add(predicate);
 		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
 		// create query
 		TypedQuery<Insurance> typedQuery = entityManager.createQuery(criteriaQuery.select(root));

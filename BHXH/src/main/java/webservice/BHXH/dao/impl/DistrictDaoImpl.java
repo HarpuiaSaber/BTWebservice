@@ -35,9 +35,10 @@ public class DistrictDaoImpl extends BaseDaoImpl<District, String> implements Di
 		// add predicate
 		List<Predicate> predicates = new ArrayList<>();
 		if (StringUtils.isNotBlank(provinceId)) {
-			Predicate predicate = criteriaBuilder.equal(province.get("id"), provinceId);
+			Predicate predicate = criteriaBuilder.like(province.get("id"), provinceId);
 			predicates.add(predicate);
 		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
 		// create query
 		TypedQuery<District> typedQuery = entityManager.createQuery(criteriaQuery.select(root));

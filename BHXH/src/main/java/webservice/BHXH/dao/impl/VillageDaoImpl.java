@@ -35,9 +35,10 @@ public class VillageDaoImpl extends BaseDaoImpl<Village, String> implements Vill
 		// add predicate
 		List<Predicate> predicates = new ArrayList<>();
 		if (StringUtils.isNotBlank(districtId)) {
-			Predicate predicate = criteriaBuilder.equal(district.get("id"), districtId);
+			Predicate predicate = criteriaBuilder.like(district.get("id"), districtId);
 			predicates.add(predicate);
 		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
 		// create query
 		TypedQuery<Village> typedQuery = entityManager.createQuery(criteriaQuery.select(root));

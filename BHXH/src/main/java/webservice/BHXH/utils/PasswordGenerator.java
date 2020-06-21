@@ -40,6 +40,6 @@ public class PasswordGenerator {
 	}
 	
 	public static void main(String[] args) throws JsonProcessingException {
-		System.out.println(getHashString("123456"));
+		System.out.println(getHashString("123qwe"));
 	}
 }

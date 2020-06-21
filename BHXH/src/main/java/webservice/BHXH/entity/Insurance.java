@@ -25,14 +25,11 @@ public class Insurance implements Serializable {
 	@Column(name = "regDate")
 	private Date regDate;
 
-	@Column(name = "status")
-	private Integer status;
-
-	@Column(name = "idUser")
+	@Column(name = "user_id")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idMethod")
+	@JoinColumn(name = "method_id")
 	private Method method;
 
 	public Long getId() {
@@ -49,14 +46,6 @@ public class Insurance implements Serializable {
 
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 
 	public User getUser() {
