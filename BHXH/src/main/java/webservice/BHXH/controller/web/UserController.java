@@ -25,7 +25,12 @@ public class UserController {
         UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         UserDto userDto = userService.getById(currentUser.getId());
-        model.addAttribute("userAccountDTO", userDto);
+        model.addAttribute("user", userDto);
         return "client/user/profile.html";
+    }
+
+    @GetMapping("/myInsurance")
+    public String myInsurance(Model model) {
+        return "client/user/my-insurance.html";
     }
 }

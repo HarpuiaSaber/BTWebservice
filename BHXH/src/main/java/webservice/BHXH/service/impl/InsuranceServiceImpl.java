@@ -59,7 +59,7 @@ public class InsuranceServiceImpl implements InsuranceService {
     public List<InsuranceDto> search(InsuranceSearch search) {
         List<InsuranceDto> dtos = new ArrayList<InsuranceDto>();
         List<Insurance> insurances = insuranceDao.search(search);
-        for(Insurance insurance : insurances){
+        for (Insurance insurance : insurances) {
             dtos.add(toDto(insurance));
         }
         return dtos;
@@ -69,7 +69,7 @@ public class InsuranceServiceImpl implements InsuranceService {
     public List<InsuranceDto> searchWithPaging(InsuranceSearch search) {
         List<InsuranceDto> dtos = new ArrayList<InsuranceDto>();
         List<Insurance> insurances = insuranceDao.searchWithPaging(search);
-        for(Insurance insurance : insurances){
+        for (Insurance insurance : insurances) {
             dtos.add(toDto(insurance));
         }
         return dtos;
@@ -80,9 +80,15 @@ public class InsuranceServiceImpl implements InsuranceService {
         return insuranceDao.countTotal(search);
     }
 
+    @Override
+    public InsuranceDto getByUser(Long userId) {
+        return toDto(insuranceDao.getByUser(userId));
+    }
+
     InsuranceDto toDto(Insurance insurance) {
         InsuranceDto dto = new InsuranceDto();
         dto.setId(insurance.getId());
+        dto.setCode(insurance.getCode());
         dto.setRegDate(DateTimeUtils.formatDate(insurance.getRegDate(), DateTimeUtils.DD_MM_YYYY));
         UserDto userDto = new UserDto();
         User user = insurance.getUser();
@@ -100,12 +106,8 @@ public class InsuranceServiceImpl implements InsuranceService {
         userDto.setLocation(user.getVillage().getName() + ", " + user.getVillage().getDistrict().getName()
                 + ", " + user.getVillage().getDistrict().getProvince().getName());
         dto.setUser(userDto);
-        MethodDto methodDto = new MethodDto();
         Method method = insurance.getMethod();
-        methodDto.setId(method.getId());
-        methodDto.setName(method.getName());
-        methodDto.setMonth(method.getMonth());
-        dto.setMethod(methodDto);
+        dto.setMethod(method.getName());
         return dto;
     }
 }

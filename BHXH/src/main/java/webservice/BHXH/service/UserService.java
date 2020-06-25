@@ -6,7 +6,7 @@ import webservice.BHXH.model.dto.UserPaymentMoneyDto;
 
 public interface UserService extends BaseService<UserDto, Long> {
 
-	UserPaymentMoneyDto getPaymentMoney(Long userId);
+	UserPaymentMoneyDto getPaymentMoney(Long userId) throws InternalServerException;
 	
 	void setBaseSalary(Long userId, Long baseSalary) throws InternalServerException;
 }

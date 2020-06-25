@@ -5,24 +5,29 @@ import java.util.List;
 
 public class ResponseDto<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private int totalRecord;
-	private List<T> item;
+    private static final long serialVersionUID = 1L;
+    private int totalRecord;
+    private List<T> data;
 
-	public int getTotalRecord() {
-		return totalRecord;
-	}
+    public ResponseDto(int totalRecord, List<T> data) {
+        this.totalRecord = totalRecord;
+        this.data = data;
+    }
 
-	public void setTotalRecord(int totalRecord) {
-		this.totalRecord = totalRecord;
-	}
+    public int getTotalRecord() {
+        return totalRecord;
+    }
 
-	public List<T> getItem() {
-		return item;
-	}
+    public void setTotalRecord(int totalRecord) {
+        this.totalRecord = totalRecord;
+    }
 
-	public void setItem(List<T> item) {
-		this.item = item;
-	}
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
+    }
 
 }

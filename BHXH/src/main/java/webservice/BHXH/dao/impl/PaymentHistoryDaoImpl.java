@@ -33,6 +33,14 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
 
         // add predicate
         List<Predicate> predicates = new ArrayList<>();
+        if (search.getId() != null) {
+            Predicate predicate = criteriaBuilder.equal(root.get("id"), search.getId());
+            predicates.add(predicate);
+        }
+        if (search.getCode() != null) {
+            Predicate predicate = criteriaBuilder.equal(root.get("code"), search.getCode());
+            predicates.add(predicate);
+        }
         if (StringUtils.isNotBlank(search.getVillageId())) {
             Predicate predicate = criteriaBuilder.equal(village.get("id"), search.getVillageId());
             predicates.add(predicate);
@@ -102,6 +110,14 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
 
         // add predicate
         List<Predicate> predicates = new ArrayList<>();
+        if (search.getId() != null) {
+            Predicate predicate = criteriaBuilder.equal(root.get("id"), search.getId());
+            predicates.add(predicate);
+        }
+        if (search.getCode() != null) {
+            Predicate predicate = criteriaBuilder.equal(root.get("code"), search.getCode());
+            predicates.add(predicate);
+        }
         if (StringUtils.isNotBlank(search.getVillageId())) {
             Predicate predicate = criteriaBuilder.equal(village.get("id"), search.getVillageId());
             predicates.add(predicate);
@@ -176,6 +192,14 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
 
         // add predicate
         List<Predicate> predicates = new ArrayList<>();
+        if (search.getId() != null) {
+            Predicate predicate = criteriaBuilder.equal(root.get("id"), search.getId());
+            predicates.add(predicate);
+        }
+        if (search.getCode() != null) {
+            Predicate predicate = criteriaBuilder.equal(root.get("code"), search.getCode());
+            predicates.add(predicate);
+        }
         if (StringUtils.isNotBlank(search.getVillageId())) {
             Predicate predicate = criteriaBuilder.equal(village.get("id"), search.getVillageId());
             predicates.add(predicate);

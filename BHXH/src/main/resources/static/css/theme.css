@@ -107,7 +107,7 @@ p {
 body {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 15px;
     line-height: 1.625;
     color: #666;
     -webkit-font-smoothing: antialiased;
@@ -1395,6 +1395,7 @@ section {
 
 .account-wrap {
     position: relative;
+    width: 25%;
 }
 
 .account-item {
@@ -1417,9 +1418,10 @@ section {
 }
 
 .account-item > .content {
-    margin-left: 45px;
+    margin: auto;
     padding: 9px 0;
     padding-left: 12px;
+    float: right;
 }
 
 .account-item > .content > a {
@@ -1433,7 +1435,7 @@ section {
     font-weight: 500;
     content: '\f2f9';
     display: inline-block;
-    font-size: 16px;
+    font-size: 15px;
     margin-left: 5px;
 }
 
@@ -2636,14 +2638,14 @@ section {
 
 .header3-wrap .header__navbar {
     width: 100%;
-    position: absolute;
+    position: relative;
     left: 50%;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
     -o-transform: translateX(-50%);
     transform: translateX(-50%);
-    top: -12px;
+    top: 15px;
 }
 
 .header__logo {

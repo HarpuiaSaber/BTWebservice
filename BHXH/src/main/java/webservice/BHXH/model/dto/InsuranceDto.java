@@ -6,9 +6,10 @@ public class InsuranceDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long id;
+    private Long code;
     private String regDate;
     private UserDto user;
-    private MethodDto method;
+    private String method;
 
     public Long getId() {
         return id;
@@ -16,6 +17,14 @@ public class InsuranceDto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCode() {
+        return code;
+    }
+
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     public String getRegDate() {
@@ -34,11 +43,11 @@ public class InsuranceDto implements Serializable {
         this.user = user;
     }
 
-    public MethodDto getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(MethodDto method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 }

@@ -40,6 +40,11 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public SpringSecurityDialect springSecurityDialect() {
+        return new SpringSecurityDialect();
+    }
+
+    @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
@@ -63,7 +68,7 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/")
                 .permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                .antMatchers("/user/**").hasAnyAuthority("USER")
+                .antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
                 .and()
                 .formLogin().loginPage("/login")
                 .usernameParameter("username")
@@ -73,7 +78,7 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe().rememberMeCookieName("app-remember-me")
                 .tokenValiditySeconds(2592000).tokenRepository(persistentTokenRepository())
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login")
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/home")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).clearAuthentication(true)
                 .invalidateHttpSession(true).deleteCookies("JSESSIONID", "app-remember-me").permitAll()
                 .and()

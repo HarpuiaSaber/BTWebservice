@@ -18,7 +18,7 @@
                             Tra cứu
                         </a>
                             <ul class="header3-sub-list list-unstyled">
-                                <li><a th:href="@{/lookup}">Bảo hiểm cá nhân</a></li>
+                                <li><a th:href="@{/lookup}">Bảo hiểm xã hội</a></li>
                                 <li><a th:href="@{/method/list}">Hình thức đóng</a></li>
                             </ul>
                         </li>
@@ -33,39 +33,6 @@
                             Đăng nhập</a>
                         </li>
                     </ul>
-                </div>
-                <div class="header__tool">
-                    <div class="account-wrap">
-                        <div
-                                class="account-item account-item--style2 clearfix js-item-menu">
-                            <div class="content">
-                                <a class="js-acc-btn" th:href="@{/user/profile}"
-                                   sec:authentication="principal.username"></a>
-                            </div>
-                            <div class="account-dropdown js-dropdown">
-                                <div class="info clearfix">
-                                    <div class="content">
-                                        <h5 class="name">
-                                            <a th:href="@{/member/profile}"
-                                               sec:authentication="principal.username"></a>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a th:href="@{/member/profile}"> <i
-                                                class="zmdi zmdi-account"></i>Thông tin tài khoản
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__footer">
-                                    <a th:href="@{/logout}"> <i class="zmdi zmdi-power"></i>Đăng
-                                        xuất
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

@@ -114,24 +114,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserPaymentMoneyDto getPaymentMoney(Long userId) {
+    public UserPaymentMoneyDto getPaymentMoney(Long userId) throws InternalServerException {
         User user = userDao.getById(userId);
         if (user != null) {
-            Insurance insurance = insuranceDao.getByUser(userId);
-            int month = insurance.getMethod().getMonth();
-            UserPaymentMoneyDto userPaymentMoney = new UserPaymentMoneyDto();
-            userPaymentMoney.setUserId(userId);
+            if (user.getBaseSalary() == null) {
+                throw new InternalServerException("Phải cấu hình lương cơ bản trước");
+            } else {
+                Insurance insurance = insuranceDao.getByUser(userId);
+                int month = insurance.getMethod().getMonth();
+                UserPaymentMoneyDto userPaymentMoney = new UserPaymentMoneyDto();
+                userPaymentMoney.setUserId(userId);
 
-            long baseSalary = user.getBaseSalary();
-            SupportType supportType = user.getSupportType();
-            double income = supportType.getIncome();
-            int percent = supportType.getPercent();
+                long baseSalary = user.getBaseSalary();
+                SupportType supportType = user.getSupportType();
+                double income = supportType.getIncome();
+                int percent = supportType.getPercent();
 
-            userPaymentMoney.setMonth(month);
-            userPaymentMoney.setPaymentMoney((income + baseSalary) * month * 22 / 100);
-            userPaymentMoney.setSupportMoney(income * percent * month * 22 / 100);
-            userPaymentMoney.setTotalMoney(userPaymentMoney.getPaymentMoney() - userPaymentMoney.getSupportMoney());
-            return userPaymentMoney;
+                userPaymentMoney.setMonth(month);
+                userPaymentMoney.setPaymentMoney((income + baseSalary) * month * 22 / 100);
+                userPaymentMoney.setSupportMoney(income * percent * month * 22 / 100);
+                userPaymentMoney.setTotalMoney(userPaymentMoney.getPaymentMoney() - userPaymentMoney.getSupportMoney());
+                return userPaymentMoney;
+            }
         }
         return null;
     }
@@ -149,7 +153,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 //            Date old = new Date(now.getYear(), now.getMonth() - month, now.getDate());
 //            Date latest = paymentHistory.getTime();
 //            if (!latest.before(old)) {
-                user.setBaseSalary(baseSalary);
+            user.setBaseSalary(baseSalary);
 //            } else {
 //                throw new InternalServerException("Chưa đóng bảo hiểm trước đó");
 //            }

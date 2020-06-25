@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.BHXH.enums.Bank;
 import webservice.BHXH.model.dto.MethodDto;
+import webservice.BHXH.model.dto.ResponseDto;
 import webservice.BHXH.service.MethodService;
 
 @RestController
@@ -24,8 +25,9 @@ public class MethodApi {
 
     @GetMapping("/getAll")
     public @ResponseBody
-    List<MethodDto> getAllMethod() {
-        return methodService.getAll();
+    ResponseDto<MethodDto> getAllMethod() {
+        List<MethodDto> dtos = methodService.getAll();
+        return new ResponseDto<MethodDto>(dtos.size(), dtos);
     }
 
 }

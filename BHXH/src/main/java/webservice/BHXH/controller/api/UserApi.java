@@ -18,51 +18,53 @@ import org.springframework.web.bind.annotation.RestController;
 import webservice.BHXH.exception.InternalServerException;
 import webservice.BHXH.model.dto.UserDto;
 import webservice.BHXH.model.dto.UserPaymentMoneyDto;
+import webservice.BHXH.service.InsuranceService;
 import webservice.BHXH.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*", maxAge = -1)
 public class UserApi {
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@PostMapping("/add")
-	public @ResponseBody UserDto createUser(@RequestBody UserDto dto) {
-		userService.add(dto);
-		return dto;
-	}
+    @PostMapping("/add")
+    public @ResponseBody
+    UserDto createUser(@RequestBody UserDto dto) {
+        userService.add(dto);
+        return dto;
+    }
 
-	@PutMapping("/update")
-	public @ResponseBody UserDto updateUser(@RequestBody UserDto dto) {
-		userService.update(dto);
-		return dto;
-	}
+    @PutMapping("/update")
+    public @ResponseBody
+    UserDto updateUser(@RequestBody UserDto dto) {
+        userService.update(dto);
+        return dto;
+    }
 
-	@DeleteMapping("/delete")
-	public @ResponseBody void delete(@PathVariable(name = "id") Long id) {
-		userService.delete(id);
-	}
+    @GetMapping("/getById")
+    public @ResponseBody
+    UserDto getById(@RequestParam Long id) {
+        return userService.getById(id);
+    }
 
-	@GetMapping("/getById")
-	public @ResponseBody UserDto getById(@RequestParam Long id) {
-		return userService.getById(id);
-	}
+    @GetMapping("/getAll")
+    public @ResponseBody
+    List<UserDto> getAll() {
+        return userService.getAll();
+    }
 
-	@GetMapping("/getAll")
-	public @ResponseBody List<UserDto> getAll() {
-		return userService.getAll();
-	}
+    @GetMapping("/getPaymentMoney")
+    public @ResponseBody
+    UserPaymentMoneyDto getPaymentMoney(@RequestParam("userId") Long userId) throws InternalServerException {
+        return userService.getPaymentMoney(userId);
+    }
 
-	@GetMapping("/getPaymentMoney")
-	public @ResponseBody UserPaymentMoneyDto getPaymentMoney(@RequestParam("userId") Long userId) {
-		return userService.getPaymentMoney(userId);
-	}
-
-	@PostMapping("/setBaseSalary")
-	public @ResponseBody void setBaseSalary(@RequestBody Long userId, @RequestBody Long baseSalary)
-			throws InternalServerException {
-		userService.setBaseSalary(userId, baseSalary);
-	}
+    @PostMapping("/setBaseSalary")
+    public @ResponseBody
+    void setBaseSalary(@RequestBody Long userId, @RequestBody Long baseSalary)
+            throws InternalServerException {
+        userService.setBaseSalary(userId, baseSalary);
+    }
 
 }

@@ -20,11 +20,14 @@ public class GeneralController {
     public String home() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated()) {
-            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-            if (principal.getRole() == Role.ADMIN) {
-                return "/admin/user/home.html";
-            } else {
-                return "/client/user/home.html";
+            Object obj = authentication.getPrincipal();
+            if (obj instanceof UserPrincipal) {
+                UserPrincipal principal = (UserPrincipal) obj;
+                if (principal.getRole() == Role.ADMIN) {
+                    return "/admin/user/home.html";
+                } else {
+                    return "/client/user/home.html";
+                }
             }
         }
         return "/general/user/home.html";
@@ -55,6 +58,25 @@ public class GeneralController {
 
     @GetMapping("/lookup")
     public String lookup() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            Object obj = authentication.getPrincipal();
+            if (obj instanceof UserPrincipal) {
+                return "client/user/lookup.html";
+            }
+        }
         return "general/user/lookup.html";
+    }
+
+    @GetMapping("/method/list")
+    public String listMethod() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            Object obj = authentication.getPrincipal();
+            if (obj instanceof UserPrincipal) {
+                return "client/user/list-method.html";
+            }
+        }
+        return "general/user/list-method.html";
     }
 }
