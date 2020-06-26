@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Tra cứu bảo hiểm xã hội</title>
+	<title>Bảo hiểm xã hội của tôi</title>
 	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 </head>
 
@@ -18,7 +18,7 @@
 						<tr>
 							<th>ID</th>
 							<th>Mã BHXH</th>
-							<th>Tên</th>
+							<th>Tên người dùng</th>
 							<th>Ngày sinh</th>
 							<th>Hình thức đóng</th>
 							<th>Địa chỉ</th>
@@ -28,14 +28,33 @@
 				</table>
 			</div>
 		</div>
+		<hr/>
+		<div class="col-md-12">
+			<h3 class="title-5 m-b-35">Đóng bảo hiểm xã hội</h3>
+			<div class="table-responsive table-responsive-data2">
+				<table class="table table-data2" id="datatable2">
+					<thead>
+					<tr>
+						<th>Số tháng</th>
+						<th>Số tiền cần đóng(VND)</th>
+						<th>Số tiền hỗ trợ(VND)</th>
+						<th>Tổng số tiền phải đóng(VND)</th>
+						<th>Hành động</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
 		<script type="text/javascript" th:inline="javascript">
 
 			var vietnameseUrl = [[@{/vendor/datatables/Vietnamese.json}]];
 			var csrf_token = [[${_csrf.token}]];
 			var url = [[@{/api/user/getMyInsurance}]];
+			var getpaymentmoney = [[@{/api/user/getPaymentMoney}]];
 
 			var id = "";
 			var table;
+			var table2;
 			$(document).ready(function () {
 				table = $('#datatable').DataTable({
 					"ordering": false,
@@ -62,6 +81,59 @@
 						{ "data": "method" },
 						{ "data": "user.location" },
 						{ "data": "regDate" },
+					],
+					"createdRow": function (row, data, index) {
+						$(row).addClass('tr-shadow');
+					},
+					"language": {
+						"url": vietnameseUrl,
+					},
+					"initComplete": function (settings, json) {
+					},
+					"drawCallback": function () {
+						table.rows().every(function () {
+							this.nodes().to$().after('<tr class="spacer"></tr>')
+						})
+					}
+				});
+				table = $('#datatable2').DataTable({
+					"ordering": false,
+					"searching": false,
+					"paging": false,
+					"destroy": true,
+					"info": false,
+					"autoWidth": false,
+					"processing": true,
+					"serverSide": true,
+					"ajax": {
+						type: "GET",
+						url: getpaymentmoney,
+						dataType: "json",
+						contentType: "application/json",
+						headers: { 'X-CSRF-TOKEN': csrf_token},
+						data: null,
+					},
+					"columns": [
+						{ "data": "month", className: "text-right" },
+						{ "data": "paymentMoney", className: "text-right" },
+						{ "data": "supportMoney", className: "text-right" },
+						{ "data": "totalMoney", className: "text-right" },
+						{ "data": "paid", className: "text-center"}
+					],
+					"columnDefs":[
+						{
+							"targets": [1, 2, 3],
+							"render": $.fn.dataTable.render.number( ',', '.', 2)
+						},
+						{
+							"targets": 4,
+							"render": function (data, type, row){
+								if(data == false){
+									return '<button id="pay" type="button" class="btn btn-primary waves-effect waves-light">Thanh toán</button>';
+								}
+								return 'Đã thanh toán';
+							}
+						}
 					],
 					"createdRow": function (row, data, index) {
 						$(row).addClass('tr-shadow');

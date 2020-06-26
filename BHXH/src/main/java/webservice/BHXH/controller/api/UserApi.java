@@ -1,8 +1,10 @@
 package webservice.BHXH.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import webservice.BHXH.exception.InternalServerException;
+import webservice.BHXH.model.UserPrincipal;
+import webservice.BHXH.model.dto.ResponseDto;
 import webservice.BHXH.model.dto.UserDto;
 import webservice.BHXH.model.dto.UserPaymentMoneyDto;
 import webservice.BHXH.service.InsuranceService;
+import webservice.BHXH.service.PaymentHistoryService;
 import webservice.BHXH.service.UserService;
 
 @RestController
@@ -27,6 +32,9 @@ import webservice.BHXH.service.UserService;
 public class UserApi {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
 
     @PostMapping("/add")
     public @ResponseBody
@@ -56,8 +64,17 @@ public class UserApi {
 
     @GetMapping("/getPaymentMoney")
     public @ResponseBody
-    UserPaymentMoneyDto getPaymentMoney(@RequestParam("userId") Long userId) throws InternalServerException {
-        return userService.getPaymentMoney(userId);
+    ResponseDto<UserPaymentMoneyDto> getPaymentMoney() throws InternalServerException {
+        UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        List<UserPaymentMoneyDto> dtos = new ArrayList<UserPaymentMoneyDto>();
+        UserPaymentMoneyDto dto = null;
+        dto = paymentHistoryService.getPaidMoney(currentUser.getId());
+        if (!dto.isPaid()) {
+            dto = userService.getPaymentMoney(currentUser.getId());
+        }
+        dtos.add(dto);
+        return new ResponseDto<UserPaymentMoneyDto>(1, dtos);
     }
 
     @PostMapping("/setBaseSalary")

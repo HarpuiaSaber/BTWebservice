@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="client/common/template">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Tra cứu lịch sử đóng</title>
+	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+</head>
+
+<body>
+	<div layout:fragment="content" th:remove="tag">
+		<script>
+			$(function () {
+				$("#toDate").datetimepicker({
+					format: 'd/m/Y',
+					timepicker: true
+				});
+				$("#fromDate").datetimepicker({
+					format: 'd/m/Y',
+					timepicker: true
+				});
+			});
+		</script>
+		<div class="col-md-12">
+			<h3 class="title-5 m-b-35">Tra cứu lịch sử đóng</h3>
+			<div class="row">
+				<div class="col-md-3 col-sm-3">
+					<div class="form-group">
+						<label class="control-label" th:text="#{from.date}"></label>: <input name="fromDate"
+							id="fromDate" th:placeholder="#{from.date}" class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-3">
+					<div class="form-group">
+						<label class="control-label" th:text="#{to.date}"></label>: <input name="toDate" id="toDate"
+							th:placeholder="#{to.date}" class="form-control form-control-sm" />
+					</div>
+				</div>
+			</div>
+			<div class="table-responsive table-responsive-data2">
+				<table class="table table-data2" id="datatable">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Mã BHXH</th>
+							<th>Tên người dùng</th>
+							<th>Ngày bắt đầu</th>
+							<th>Ngày đóng</th>
+							<th>Hình thức đóng</th>
+							<th>Lương cơ bản</th>
+							<th>Tiền đóng</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+
+			var vietnameseUrl = [[@{/vendor/datatables/Vietnamese.json}]];
+			var url = [[@{/api/user/myPaymentHistories}]];
+
+			var id = "";
+			var table;
+			$(document).ready(function () {
+				table = $('#datatable').DataTable({
+					"ordering": false,
+					"searching":false,
+					"destroy": true,
+					"autoWidth": false,
+					"processing": true,
+					"serverSide": true,
+					"ajax": {
+						type: "POST",
+						url: url,
+						dataType: "json",
+						contentType: "application/json",
+						data: function (data) {
+							data.toDate = $('#toDate').val();
+			            	data.fromDate = $('#fromDate').val();
+							return JSON.stringify(data);
+						}
+					},
+					"lengthMenu": [10, 25, 50],
+					"columns": [
+						{ "data": "id", className: "text-right" },
+						{ "data": "insurance.code", className: "text-left" },
+						{ "data": "insurance.user.name", className: "text-left" },
+						{ "data": "startDate", className: "text-center" },
+						{ "data": "time", className: "text-center" },
+						{ "data": "method.name", className: "text-left"},
+						{ "data": "baseSalary", className: "text-right" },
+						{ "data": "cost", className: "text-right" },
+					],
+					"columnDefs":[
+						{
+							"targets": [6, 7],
+							"render": $.fn.dataTable.render.number( ',', '.', 2)
+						},
+					],
+					"createdRow": function (row, data, index) {
+						$(row).addClass('tr-shadow');
+					},
+					"language": {
+						"url": vietnameseUrl,
+					},
+					"initComplete": function (settings, json) {
+						$('#fromDate').change(function (e) {
+							table.draw();
+					    });
+						$('#toDate').change(function (e) {
+							table.draw();
+					    });
+					},
+					"drawCallback": function () {
+						table.rows().every(function () {
+							this.nodes().to$().after('<tr class="spacer"></tr>')
+						})
+					}
+				});
+
+			});
+		</script>
+	</div>
+</body>
+
+</html>

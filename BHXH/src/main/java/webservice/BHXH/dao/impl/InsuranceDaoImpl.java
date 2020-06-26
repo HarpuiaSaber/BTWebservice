@@ -176,11 +176,11 @@ public class InsuranceDaoImpl extends BaseDaoImpl<Insurance, Long> implements In
         // paging
         // create query
         TypedQuery<Insurance> typedQuery = entityManager.createQuery(criteriaQuery.select(root));
-        if (search.getStartCount() != null) {
-            typedQuery.setFirstResult((search.getStartCount()));
+        if (search.getStart() != null) {
+            typedQuery.setFirstResult((search.getStart()));
         }
 
-        typedQuery.setMaxResults(search.getMaxResultCount());
+        typedQuery.setMaxResults(search.getLength());
         return typedQuery.getResultList();
     }
 

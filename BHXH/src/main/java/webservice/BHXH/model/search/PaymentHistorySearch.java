@@ -4,6 +4,7 @@ public class PaymentHistorySearch extends BaseSearch<Long> {
 
     private static final long serialVersionUID = 1L;
     private Long identity;
+    private Long userId;
     private String name;
     private String dob;
     private String villageId;
@@ -19,6 +20,14 @@ public class PaymentHistorySearch extends BaseSearch<Long> {
 
     public void setIdentity(Long identity) {
         this.identity = identity;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {

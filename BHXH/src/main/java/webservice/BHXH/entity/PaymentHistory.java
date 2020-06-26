@@ -21,6 +21,9 @@ public class PaymentHistory implements Serializable {
     @Column(name = "time")
     private Date time;
 
+    @Column(name = "start_date")
+    private Date startDate;
+
     @Column(name = "transaction_id")
     private Integer transactionId;
 
@@ -33,6 +36,12 @@ public class PaymentHistory implements Serializable {
 
     @Column(name = "base_salary")
     private Long baseSalary;
+
+    @Column(name = "support_money")
+    private Double supportMoney;
+
+    @Column(name = "payment_money")
+    private Double paymentMoney;
 
     public Long getId() {
         return id;
@@ -56,6 +65,14 @@ public class PaymentHistory implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public Integer getTransactionId() {
@@ -88,5 +105,21 @@ public class PaymentHistory implements Serializable {
 
     public void setBaseSalary(Long baseSalary) {
         this.baseSalary = baseSalary;
+    }
+
+    public Double getSupportMoney() {
+        return supportMoney;
+    }
+
+    public void setSupportMoney(Double supportMoney) {
+        this.supportMoney = supportMoney;
+    }
+
+    public Double getPaymentMoney() {
+        return paymentMoney;
+    }
+
+    public void setPaymentMoney(Double paymentMoney) {
+        this.paymentMoney = paymentMoney;
     }
 }

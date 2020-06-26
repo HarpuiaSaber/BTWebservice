@@ -33,8 +33,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private UserDao userDao;
     @Autowired
     private InsuranceDao insuranceDao;
-    @Autowired
-    private PaymentHistoryDao paymentHistoryDao;
 
     @Override
     public void add(UserDto t) {
@@ -131,9 +129,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 int percent = supportType.getPercent();
 
                 userPaymentMoney.setMonth(month);
-                userPaymentMoney.setPaymentMoney((income + baseSalary) * month * 22 / 100);
-                userPaymentMoney.setSupportMoney(income * percent * month * 22 / 100);
+                userPaymentMoney.setPaymentMoney((double) baseSalary * month * 22 / 100);
+                userPaymentMoney.setSupportMoney(income * percent * month * 22 / 10000);
                 userPaymentMoney.setTotalMoney(userPaymentMoney.getPaymentMoney() - userPaymentMoney.getSupportMoney());
+                userPaymentMoney.setPaid(false);
                 return userPaymentMoney;
             }
         }

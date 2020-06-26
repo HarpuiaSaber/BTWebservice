@@ -33,4 +33,9 @@ public class UserController {
     public String myInsurance(Model model) {
         return "client/user/my-insurance.html";
     }
+
+    @GetMapping("/myPaymentHistories")
+    public String myPaymentHistories(Model model) {
+        return "client/user/payment-histories.html";
+    }
 }

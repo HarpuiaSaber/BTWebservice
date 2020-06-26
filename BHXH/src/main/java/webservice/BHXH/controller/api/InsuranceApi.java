@@ -19,7 +19,7 @@ public class InsuranceApi {
     @Autowired
     private InsuranceService insuranceService;
 
-    @GetMapping("/getMyInsurance")
+    @GetMapping("/user/getMyInsurance")
     public @ResponseBody
     ResponseDto<InsuranceDto> getMyInsurance() {
         UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()

@@ -4,33 +4,32 @@ import java.io.Serializable;
 
 public class BaseSearch<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private T id;
-	private Integer startCount;
-	private Integer maxResultCount;
+    private static final long serialVersionUID = 1L;
+    private T id;
+    private Integer start;
+    private Integer length;
 
-	public T getId() {
-		return id;
-	}
+    public T getId() {
+        return id;
+    }
 
-	public void setId(T id) {
-		this.id = id;
-	}
+    public void setId(T id) {
+        this.id = id;
+    }
 
-	public Integer getStartCount() {
-		return startCount;
-	}
+    public Integer getStart() {
+        return start;
+    }
 
-	public void setStartCount(Integer startCount) {
-		this.startCount = startCount;
-	}
+    public void setStart(Integer start) {
+        this.start = start;
+    }
 
-	public Integer getMaxResultCount() {
-		return maxResultCount;
-	}
+    public Integer getLength() {
+        return length;
+    }
 
-	public void setMaxResultCount(Integer maxResultCount) {
-		this.maxResultCount = maxResultCount;
-	}
-
+    public void setLength(Integer length) {
+        this.length = length;
+    }
 }

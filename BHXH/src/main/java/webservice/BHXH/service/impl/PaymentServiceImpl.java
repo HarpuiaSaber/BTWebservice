@@ -7,23 +7,21 @@ import webservice.BHXH.entity.Insurance;
 import webservice.BHXH.entity.PaymentHistory;
 import webservice.BHXH.entity.Method;
 import webservice.BHXH.entity.User;
-import webservice.BHXH.model.dto.InsuranceDto;
-import webservice.BHXH.model.dto.PaymentHistoryDto;
-import webservice.BHXH.model.dto.MethodDto;
-import webservice.BHXH.model.dto.UserDto;
+import webservice.BHXH.model.dto.*;
 import webservice.BHXH.model.search.PaymentHistorySearch;
 import webservice.BHXH.service.PaymentHistoryService;
 import webservice.BHXH.utils.DateTimeUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 @Transactional
 public class PaymentServiceImpl implements PaymentHistoryService {
     @Autowired
-    private PaymentHistoryDao PaymentHistoryDao;
+    private PaymentHistoryDao paymentHistoryDao;
 
     @Override
     public void add(PaymentHistoryDto t) {
@@ -58,8 +56,8 @@ public class PaymentServiceImpl implements PaymentHistoryService {
     @Override
     public List<PaymentHistoryDto> search(PaymentHistorySearch search) {
         List<PaymentHistoryDto> dtos = new ArrayList<PaymentHistoryDto>();
-        List<PaymentHistory> paymentHistorys = PaymentHistoryDao.search(search);
-        for(PaymentHistory PaymentHistory : paymentHistorys){
+        List<PaymentHistory> paymentHistorys = paymentHistoryDao.search(search);
+        for (PaymentHistory PaymentHistory : paymentHistorys) {
             dtos.add(toDto(PaymentHistory));
         }
         return dtos;
@@ -68,8 +66,8 @@ public class PaymentServiceImpl implements PaymentHistoryService {
     @Override
     public List<PaymentHistoryDto> searchWithPaging(PaymentHistorySearch search) {
         List<PaymentHistoryDto> dtos = new ArrayList<PaymentHistoryDto>();
-        List<PaymentHistory> paymentHistorys = PaymentHistoryDao.searchWithPaging(search);
-        for(PaymentHistory PaymentHistory : paymentHistorys){
+        List<PaymentHistory> paymentHistorys = paymentHistoryDao.searchWithPaging(search);
+        for (PaymentHistory PaymentHistory : paymentHistorys) {
             dtos.add(toDto(PaymentHistory));
         }
         return dtos;
@@ -77,41 +75,55 @@ public class PaymentServiceImpl implements PaymentHistoryService {
 
     @Override
     public long countTotal(PaymentHistorySearch search) {
-        return PaymentHistoryDao.countTotal(search);
+        return paymentHistoryDao.countTotal(search);
     }
 
     @Override
-    public List<PaymentHistoryDto> getByUser(Long userId) {
-        List<PaymentHistoryDto> dtos = new ArrayList<PaymentHistoryDto>();
-        List<PaymentHistory> paymentHistorys = PaymentHistoryDao.getByUser(userId);
-        for(PaymentHistory PaymentHistory : paymentHistorys){
-            dtos.add(toDto(PaymentHistory));
+    public UserPaymentMoneyDto getPaidMoney(Long userId) {
+        PaymentHistory latest = paymentHistoryDao.getLatest(userId);
+        UserPaymentMoneyDto dto = new UserPaymentMoneyDto();
+        dto.setUserId(userId);
+        if (latest != null) {
+            Date oldStartDate = latest.getStartDate();
+            int oldMonth = latest.getMethod().getMonth() + oldStartDate.getMonth();
+            Date oldEndDate = null;
+            if (oldMonth > 12) {
+                oldEndDate = new Date(oldStartDate.getYear() + 1, oldMonth - 12, oldStartDate.getDate());
+            } else {
+                oldEndDate = new Date(oldStartDate.getYear(), oldMonth, oldStartDate.getDate());
+            }
+            Date now = new Date();
+            if (now.before(oldStartDate) && now.before(oldEndDate)) {
+                dto.setPaid(true);
+                dto.setMonth(latest.getMethod().getMonth());
+                dto.setPaymentMoney(latest.getPaymentMoney());
+                dto.setSupportMoney(latest.getSupportMoney());
+                dto.setTotalMoney(latest.getCost());
+            } else {
+                dto.setPaid(false);
+            }
         }
-        return dtos;
+        return dto;
     }
 
     PaymentHistoryDto toDto(PaymentHistory paymentHistory) {
         PaymentHistoryDto dto = new PaymentHistoryDto();
         dto.setId(paymentHistory.getId());
         dto.setTime(DateTimeUtils.formatDate(paymentHistory.getTime(), DateTimeUtils.DD_MM_YYYY));
+        dto.setStartDate(DateTimeUtils.formatDate(paymentHistory.getStartDate(), DateTimeUtils.DD_MM_YYYY));
+        dto.setBaseSalary(paymentHistory.getBaseSalary());
+        dto.setCost(paymentHistory.getCost());
+        dto.setTransactionId(paymentHistory.getTransactionId());
+        dto.setSupportMoney(paymentHistory.getSupportMoney());
+        dto.setPaymentMoney(paymentHistory.getPaymentMoney());
         Insurance insurance = paymentHistory.getInsurance();
         InsuranceDto insuranceDto = new InsuranceDto();
         insuranceDto.setId(insurance.getId());
+        insuranceDto.setCode(insurance.getCode());
         UserDto userDto = new UserDto();
         User user = insurance.getUser();
         userDto.setId(user.getId());
         userDto.setName(user.getName());
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
-        userDto.setGender(user.getGender().getValue());
-        userDto.setRole(user.getRole());
-        userDto.setDob(DateTimeUtils.formatDate(user.getDob(), DateTimeUtils.DD_MM_YYYY));
-        userDto.setIdentity(user.getIdentity());
-        userDto.setEnabled(user.getEnabled());
-        userDto.setPhone(user.getPhone());
-        userDto.setVillageId(user.getVillage().getId());
-        userDto.setLocation(user.getVillage().getName() + ", " + user.getVillage().getDistrict().getName()
-                + ", " + user.getVillage().getDistrict().getProvince().getName());
         insuranceDto.setUser(userDto);
         dto.setInsurance(insuranceDto);
         MethodDto methodDto = new MethodDto();

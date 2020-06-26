@@ -1,6 +1,7 @@
 package webservice.BHXH.service;
 
 import webservice.BHXH.model.dto.PaymentHistoryDto;
+import webservice.BHXH.model.dto.UserPaymentMoneyDto;
 import webservice.BHXH.model.search.PaymentHistorySearch;
 
 import java.util.List;
@@ -13,6 +14,6 @@ public interface PaymentHistoryService extends BaseService<PaymentHistoryDto, Lo
 
     long countTotal(PaymentHistorySearch search);
 
-    List<PaymentHistoryDto> getByUser(Long userId);
+    UserPaymentMoneyDto getPaidMoney(Long userId);
 
 }

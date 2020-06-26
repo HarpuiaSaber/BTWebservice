@@ -21,16 +21,13 @@
                                 <li><a th:href="@{/lookup}">Bảo hiểm xã hội</a></li>
                                 <li><a th:href="@{/method/list}">Hình thức đóng</a></li>
                                 <li><a th:href="@{/user/myInsurance}">Bảo hiểm cá nhân</a></li>
-                                <li><a th:href="@{/user/history}">Lịch sử đóng</a></li>
+                                <li><a th:href="@{/user/myPaymentHistories}">Lịch sử đóng</a></li>
                             </ul>
                         </li>
-                        <li class="has-sub"><a style="color: #002677; font-weight: bold;"> <i
+                        <li class="has-sub"><a th:href="@{/user/config}" style="color: #002677; font-weight: bold;"> <i
                                 class="fa fa-cogs"></i> <span class="bot-line"></span>
                             Cấu hình
                         </a>
-                            <ul class="header3-sub-list list-unstyled">
-                                <li><a th:href="@{/user/config}">Bảo hiểm cá nhân</a></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>

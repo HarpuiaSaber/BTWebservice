@@ -168,11 +168,11 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         /// paging
         // create query
         TypedQuery<PaymentHistory> typedQuery = entityManager.createQuery(criteriaQuery.select(root));
-        if (search.getStartCount() != null) {
-            typedQuery.setFirstResult((search.getStartCount()));
+        if (search.getStart() != null) {
+            typedQuery.setFirstResult((search.getStart()));
         }
 
-        typedQuery.setMaxResults(search.getMaxResultCount());
+        typedQuery.setMaxResults(search.getLength());
         return typedQuery.getResultList();
     }
 
@@ -194,6 +194,10 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         List<Predicate> predicates = new ArrayList<>();
         if (search.getId() != null) {
             Predicate predicate = criteriaBuilder.equal(root.get("id"), search.getId());
+            predicates.add(predicate);
+        }
+        if (search.getUserId() != null) {
+            Predicate predicate = criteriaBuilder.equal(user.get("id"), search.getUserId());
             predicates.add(predicate);
         }
         if (search.getCode() != null) {
@@ -250,7 +254,7 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
     }
 
     @Override
-    public List<PaymentHistory> getByUser(Long userId) {
+    public PaymentHistory getLatest(Long userId) {
         // create returns the data type of critetia query
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PaymentHistory> criteriaQuery = criteriaBuilder.createQuery(PaymentHistory.class);
@@ -262,7 +266,6 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
 
         // add predicate
         List<Predicate> predicates = new ArrayList<>();
-
         if (userId != null) {
             Predicate predicate = criteriaBuilder.equal(user.get("id"), userId);
             predicates.add(predicate);
@@ -274,7 +277,9 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
 
         // create query
         TypedQuery<PaymentHistory> typedQuery = entityManager.createQuery(criteriaQuery.select(root));
+        typedQuery.setFirstResult(0);
+        typedQuery.setMaxResults(1);
 
-        return typedQuery.getResultList();
+        return typedQuery.getSingleResult();
     }
 }

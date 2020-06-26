@@ -12,6 +12,9 @@ public class PaymentHistoryDto implements Serializable {
     private MethodDto method;
     private Double cost;
     private Long baseSalary;
+    private String startDate;
+    private Double supportMoney;
+    private Double paymentMoney;
 
     public Long getId() {
         return id;
@@ -67,5 +70,29 @@ public class PaymentHistoryDto implements Serializable {
 
     public void setBaseSalary(Long baseSalary) {
         this.baseSalary = baseSalary;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public Double getSupportMoney() {
+        return supportMoney;
+    }
+
+    public void setSupportMoney(Double supportMoney) {
+        this.supportMoney = supportMoney;
+    }
+
+    public Double getPaymentMoney() {
+        return paymentMoney;
+    }
+
+    public void setPaymentMoney(Double paymentMoney) {
+        this.paymentMoney = paymentMoney;
     }
 }
