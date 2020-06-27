@@ -40,7 +40,12 @@ public class GeneralController {
                         instanceof AnonymousAuthenticationToken)) {
             return "redirect:/profile";
         }
-        return "client/user/login.html";
+        return "general/user/login.html";
+    }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "general/user/signup.html";
     }
 
     @GetMapping("/profile")

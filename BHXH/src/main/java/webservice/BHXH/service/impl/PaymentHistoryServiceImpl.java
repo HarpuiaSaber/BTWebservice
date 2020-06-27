@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PaymentServiceImpl implements PaymentHistoryService {
+public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     @Autowired
     private PaymentHistoryDao paymentHistoryDao;
 

@@ -1,10 +1,12 @@
 package webservice.BHXH.service;
 
+import webservice.BHXH.exception.InternalServerException;
+
 import java.util.List;
 
 public interface BaseService<T, K> {
 
-	void add(T t);
+	void add(T t) throws InternalServerException;
 
 	void update(T t);
 

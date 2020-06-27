@@ -54,26 +54,20 @@
 			<div class="row">
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
-						<label class="control-label" text="">Mã BHXH</label>: <input name="code" id="code"
-																				  placeholder="Mã bảo hiểm xã hội" class="form-control form-control-sm" />
-					</div>
-				</div>
-				<div class="col-md-3 col-sm-3">
-					<div class="form-group">
 						<label class="control-label" text="">CMND</label>: <input name="identity" id="identity"
-																				  placeholder="Chứng minh nhân dân" class="form-control form-control-sm" />
+																				  placeholder="Chứng minh nhân dân" class="au-input au-input--full" />
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" text="">Tên</label>: <input name="name" id="name"
-																				 placeholder="Họ tên" class="form-control form-control-sm" />
+																				 placeholder="Họ tên" class="au-input au-input--full" />
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" text="">Ngày sinh</label>: <input name="dob" id="dob"
-																				 placeholder="Ngày sinh" class="form-control form-control-sm" />
+																				 placeholder="Ngày sinh" class="au-input au-input--full" />
 					</div>
 				</div>
 			</div>
@@ -81,13 +75,13 @@
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" th:text="#{from.date}"></label>: <input name="fromDate"
-							id="fromDate" th:placeholder="#{from.date}" class="form-control form-control-sm" />
+							id="fromDate" th:placeholder="#{from.date}" class="au-input au-input--full" />
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" th:text="#{to.date}"></label>: <input name="toDate" id="toDate"
-							th:placeholder="#{to.date}" class="form-control form-control-sm" />
+							th:placeholder="#{to.date}" class="au-input au-input--full" />
 					</div>
 				</div>
 			</div>
@@ -108,7 +102,6 @@
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Mã BHXH</th>
 							<th>Tên người dùng</th>
 							<th>Ngày sinh</th>
 							<th>Hình thức đóng</th>
@@ -259,6 +252,7 @@
 			var url = [[@{/api/lookup}]];
 
 			var id = "";
+			var searchDto = {};
 			var table;
 			var lookup = $('#lookup')
 			$('#reset').on('click', function(){
@@ -280,25 +274,24 @@
 						dataType: "json",
 						contentType: "application/json",
 						data: function (data) {
-							data.provinceId = $('#province').val();
-							data.districtId = $('#district').val();
-							data.villageId = $('#village').val();
-							data.code = $('#code').val();
-							data.identity = $('#identity').val();
-							data.name = $('#name').val();
-							data.dob = $('#dob').val();
-							data.toDate = $('#toDate').val();
-			            	data.fromDate = $('#fromDate').val();
-			            	data.maxResultCount = 1;
-							return JSON.stringify(data);
+							searchDto.provinceId = $('#province').val();
+							searchDto.districtId = $('#district').val();
+							searchDto.villageId = $('#village').val();
+							searchDto.identity = $('#identity').val();
+							searchDto.name = $('#name').val();
+							searchDto.dob = $('#dob').val();
+							searchDto.toDate = $('#toDate').val();
+			            	searchDto.fromDate = $('#fromDate').val();
+			            	searchDto.length = 1;
+			            	searchDto.start = data.start;
+							return JSON.stringify(searchDto);
 						}
 					},
 					"columns": [
 						{ "data": "id", className: "text-right" },
-						{ "data": "code", className: "text-right" },
 						{ "data": "user.name" },
 						{ "data": "user.dob" },
-						{ "data": "method" },
+						{ "data": "method.name" },
 						{ "data": "user.location" },
 						{ "data": "regDate" },
 					],

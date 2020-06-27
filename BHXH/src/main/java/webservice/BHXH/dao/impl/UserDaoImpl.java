@@ -1,5 +1,6 @@
 package webservice.BHXH.dao.impl;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
@@ -32,11 +33,14 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
             Predicate predicate = criteriaBuilder.equal(root.get("username"), username);
             predicates.add(predicate);
         }
-        criteriaQuery.where(predicates.toArray(new Predicate[] {}));
+        criteriaQuery.where(predicates.toArray(new Predicate[]{}));
 
         // create query
         TypedQuery<User> typedQuery = entityManager.createQuery(criteriaQuery.select(root));
-
-        return typedQuery.getSingleResult();
+        try {
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

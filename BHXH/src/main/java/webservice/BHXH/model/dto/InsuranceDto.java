@@ -9,7 +9,7 @@ public class InsuranceDto implements Serializable {
     private Long code;
     private String regDate;
     private UserDto user;
-    private String method;
+    private MethodDto method;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class InsuranceDto implements Serializable {
         this.user = user;
     }
 
-    public String getMethod() {
+    public MethodDto getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(MethodDto method) {
         this.method = method;
     }
 }

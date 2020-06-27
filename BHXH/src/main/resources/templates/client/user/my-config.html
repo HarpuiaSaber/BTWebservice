@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="client/common/template" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Cấu hình bảo hiểm cá nhân</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
+            <div class="container">
+                <div class="login-wrap">
+                    <div class="login-content">
+                        <div class="login-form">
+                            <h3 class="title-5 m-b-35">Cấu hình bảo hiểm cá nhân</h3>
+                            <form id="form">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Lương cơ bản</label> <input id="baseSalary" class="au-input au-input--full" type="text"
+                                                                           name="name" required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" text="">Hình thức đóng</label>
+                                        <select name="methodId" id="method" class="form-control md-size-list" size="7">
+                                        </select>
+                                    </div>
+                                </div>
+                                <button id="config" class="au-btn au-btn--block au-btn--green m-b-20"
+                                        type="button">Cấu hình
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+
+			var url = [[@{/api/user/setMyConfig}]];
+			var csrf_token = [[${_csrf.token}]];
+			var listmethod = [[@{/api/method/getAll}]];
+			var getConfig = [[@{/api/user/getMyConfig}]];
+
+			var method = $('#method');
+			var baseSalary = $('#baseSalary');
+			var configDto = {};
+
+            $(document).ready(function () {
+                $.ajax({
+                    url: listmethod,
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+                        var list = data.data;
+                        for (var i = 0; i < list.length; i++) {
+                            var $option = $("<option/>", {
+                                value: list[i].id,
+                                text: list[i].name,
+                            });
+                            method.append($option);
+                        }
+                    },
+                    error: function (data) {
+                        alert("Lỗi xảy ra");
+                    }
+                 });
+                $.ajax({
+                    url: getConfig,
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: "application/json",
+                    headers: { 'X-CSRF-TOKEN': csrf_token},
+                    success: function (data) {
+                        baseSalary.val(data.baseSalary);
+                        method.val(data.methodId);
+                        method.selectmenu('refresh');
+                    },
+                    error: function (data) {
+                        alert("Lỗi xảy ra");
+                    }
+                });
+            });
+
+			$('#config').on('click', function () {
+			    configDto.baseSalary = baseSalary.val();
+				configDto.methodId = method.val();
+				$.ajax({
+					url: url,
+					type: 'POST',
+					contentType: "application/json",
+					headers: { 'X-CSRF-TOKEN': csrf_token},
+					data: JSON.stringify(configDto),
+					success: function () {
+						alert("Cấu hình thành công");
+						location.reload();
+					},
+					error: function (data) {
+						alert("Lỗi");
+					}
+				});
+			});
+
+    </script>
+</div>
+</body>
+</html>

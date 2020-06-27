@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="client/common/template">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="client/common/template">
 
 <head>
-	<meta charset="UTF-8" />
-	<title>Bảo hiểm xã hội của tôi</title>
-	<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <meta charset="UTF-8"/>
+    <title>Bảo hiểm xã hội của tôi</title>
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
 </head>
 
 <body>
-	<div layout:fragment="content" th:remove="tag">
-		<div class="col-md-12">
-			<h3 class="title-5 m-b-35">Bảo hiểm xã hội của tôi</h3>
-			<div class="table-responsive table-responsive-data2">
-				<table class="table table-data2" id="datatable">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Mã BHXH</th>
-							<th>Tên người dùng</th>
-							<th>Ngày sinh</th>
-							<th>Hình thức đóng</th>
-							<th>Địa chỉ</th>
-							<th>Ngày đăng ký</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-		<hr/>
-		<div class="col-md-12">
-			<h3 class="title-5 m-b-35">Đóng bảo hiểm xã hội</h3>
-			<div class="table-responsive table-responsive-data2">
-				<table class="table table-data2" id="datatable2">
-					<thead>
-					<tr>
-						<th>Số tháng</th>
-						<th>Số tiền cần đóng(VND)</th>
-						<th>Số tiền hỗ trợ(VND)</th>
-						<th>Tổng số tiền phải đóng(VND)</th>
-						<th>Hành động</th>
-					</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
-		<script type="text/javascript" th:inline="javascript">
+<div layout:fragment="content" th:remove="tag">
+    <div class="col-md-12">
+        <h3 class="title-5 m-b-35">Bảo hiểm xã hội của tôi</h3>
+        <div class="table-responsive table-responsive-data2">
+            <table class="table table-data2" id="datatable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên người dùng</th>
+                    <th>Ngày sinh</th>
+                    <th>Hình thức đóng</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày đăng ký</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <hr/>
+    <div class="col-md-12">
+        <h3 class="title-5 m-b-35">Đóng bảo hiểm xã hội</h3>
+        <div class="table-responsive table-responsive-data2">
+            <table class="table table-data2" id="datatable2">
+                <thead>
+                <tr>
+                    <th>Số tháng</th>
+                    <th>Số tiền cần đóng(VND)</th>
+                    <th>Số tiền hỗ trợ(VND)</th>
+                    <th>Tổng số tiền phải đóng(VND)</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
 
 			var vietnameseUrl = [[@{/vendor/datatables/Vietnamese.json}]];
 			var csrf_token = [[${_csrf.token}]];
@@ -75,10 +74,9 @@
 					},
 					"columns": [
 						{ "data": "id", className: "text-right" },
-						{ "data": "code", className: "text-right" },
 						{ "data": "user.name" },
 						{ "data": "user.dob" },
-						{ "data": "method" },
+						{ "data": "method.name" },
 						{ "data": "user.location" },
 						{ "data": "regDate" },
 					],
@@ -96,7 +94,7 @@
 						})
 					}
 				});
-				table = $('#datatable2').DataTable({
+				table2 = $('#datatable2').DataTable({
 					"ordering": false,
 					"searching": false,
 					"paging": false,
@@ -112,6 +110,9 @@
 						contentType: "application/json",
 						headers: { 'X-CSRF-TOKEN': csrf_token},
 						data: null,
+						error: function (data) {
+							alert(data.responseJSON.message);
+						}
 					},
 					"columns": [
 						{ "data": "month", className: "text-right" },
@@ -129,7 +130,7 @@
 							"targets": 4,
 							"render": function (data, type, row){
 								if(data == false){
-									return '<button id="pay" type="button" class="btn btn-primary waves-effect waves-light">Thanh toán</button>';
+									return '<form action="/payment/pay" method="post"><button type="submit" name="price" value='+row.totalMoney+' class="btn btn-primary waves-effect waves-light">Thanh toán</button></form>';
 								}
 								return 'Đã thanh toán';
 							}
@@ -150,8 +151,9 @@
 					}
 				});
 			});
-		</script>
-	</div>
+
+    </script>
+</div>
 </body>
 
 </html>

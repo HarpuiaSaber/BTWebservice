@@ -16,10 +16,5 @@ public class AdminApi {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/addUser")
-	public @ResponseBody UserDto add(@RequestBody UserDto dto) {
-		userService.add(dto);
-		return dto;
-	}
 
 }

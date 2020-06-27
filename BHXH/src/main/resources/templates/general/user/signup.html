@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="general/common/template">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0 , maximum-scale=1, minimum-scale=1, user-scalable=no" />
+	<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/png" />
+	<title>Đăng ký</title>
+	<meta content="client" name="description" />
+	<!-- Bootstrap CSS-->
+	<link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+	<!-- Main CSS-->
+	<link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+</head>
+
+<body>
+	<div layout:fragment="content" th:remove="tag">
+		<script>
+			$(function () {
+				$("#dob").datetimepicker({
+					format: 'd/m/Y',
+					timepicker: true
+				});
+			});
+		</script>
+		<div class="page-wrapper">
+			<div class="page-content--bge5">
+				<div class="container">
+					<div class="login-content" style="width: 70%;
+                     position: relative;
+                     margin: auto;">
+						<div class="login-form">
+							<h3 class="title-5 m-b-35">Đăng ký</h3>
+							<form id="form">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-6 col-sm-6">
+											<div class="form-group">
+												<label>Họ tên</label> <input class="au-input au-input--full" type="text"
+													name="name" required="required" placeholder="Họ tên">
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-6">
+											<div class="form-group">
+												<label>Số điện thoại</label> <input class="au-input au-input--full"
+													type="text" name="phone" required="required" title="Ten digits code"
+													placeholder="888 888 8888" maxlength="12">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6 col-sm-6">
+											<div class="form-group">
+												<label>CMND</label> <input class="au-input au-input--full" type="text"
+													name="identity" required="required" placeholder="CMND">
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-6">
+											<div class="form-group">
+												<label>Ngày sinh</label><input name="dob" id="dob"
+													placeholder="Ngày sinh" required="required"
+													class="au-input au-input--full" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label>Giới tính</label>
+												<div class="form-check-inline form-check">
+													<label for="gender2" class="form-check-input"
+														style="margin-right: 10px;margin-left: 10px;">
+														<input type="radio" id="gender1" name="gender" value="0"
+															class="form-check-input" checked>Nam
+													</label>
+													<label for="gender1" class="form-check-input"
+														style="margin-right: 10px;margin-left: 10px;">
+														<input type="radio" id="gender2" name="gender" value="1"
+															class="form-check-input">Nữ
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="control-label" text="">Tỉnh/Thành phố</label><select
+													name="provinceId" id="province" class="form-control">
+												</select>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="control-label" text="">Huyện</label><select
+													name="districtId" id="district" class="form-control">
+												</select>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="control-label" text="">Xã</label><select name="villageId"
+													id="village" class="form-control">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6 col-sm-6">
+											<div class="form-group">
+												<label>Tài khoản</label> <input class="au-input au-input--full"
+													type="text" name="username" required="required"
+													placeholder="Tài khoản">
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-6">
+											<div class="form-group">
+												<label>Mật khẩu</label> <input class="au-input au-input--full"
+													type="password" name="password" required="required"
+													placeholder="Mật khẩu">
+											</div>
+										</div>
+									</div>
+									<button id="signup" class="au-btn au-btn--block au-btn--green m-b-20"
+										type="button">Đăng
+										ký
+									</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+
+			var getAllProvince = [[@{/api/location/getAllProvince}]]
+			var getDistrictByProvince = [[@{/api/location/getDistrictByProvince}]]
+			var getVillageByDistrict = [[@{/api/location/getVillageByDistrict}]]
+
+			var province = $('#province');
+			var district = $('#district');
+			var village = $('#village');
+
+			$(document).ready(function () {
+				$.ajax({
+					url: getAllProvince,
+					type: 'GET',
+					dataType: "json",
+					contentType: "application/json",
+					success: function (data) {
+						for (var i = 0; i < data.length; i++) {
+							var $option = $("<option/>", {
+								value: data[i].id,
+								text: data[i].name
+							});
+							province.append($option);
+						}
+					},
+					error: function () {
+						alert("Loi xay ra");
+					}
+				});
+				$.ajax({
+					url: getDistrictByProvince,
+					type: 'GET',
+					dataType: "json",
+					contentType: "application/json",
+					data: { "provinceId": "01" },
+					success: function (data) {
+						for (var i = 0; i < data.length; i++) {
+							var $option = $("<option/>", {
+								value: data[i].id,
+								text: data[i].name
+							});
+							district.append($option);
+						}
+					},
+					error: function () {
+						alert("Loi xay ra");
+					}
+				});
+				$.ajax({
+					url: getVillageByDistrict,
+					type: 'GET',
+					dataType: "json",
+					contentType: "application/json",
+					data: { "districtId": "001" },
+					success: function (data) {
+						for (var i = 0; i < data.length; i++) {
+							var $option = $("<option/>", {
+								value: data[i].id,
+								text: data[i].name
+							});
+							village.append($option);
+						}
+					},
+					error: function () {
+						alert("Loi xay ra");
+					}
+				});
+			});
+			province.on('change', function () {
+				$.ajax({
+					url: getDistrictByProvince,
+					type: 'GET',
+					dataType: "json",
+					contentType: "application/json",
+					data: { "provinceId": province.val() },
+					success: function (data) {
+						district.empty();
+						village.empty();
+						for (var i = 0; i < data.length; i++) {
+							var $option = $("<option/>", {
+								value: data[i].id,
+								text: data[i].name
+							});
+							district.append($option);
+						}
+						$.ajax({
+							url: getVillageByDistrict,
+							type: 'GET',
+							dataType: "json",
+							contentType: "application/json",
+							data: { "districtId": data[0].id },
+							success: function (data) {
+								village.empty();
+								for (var i = 0; i < data.length; i++) {
+									var $option = $("<option/>", {
+										value: data[i].id,
+										text: data[i].name
+									});
+									village.append($option);
+								}
+							},
+							error: function () {
+								alert("Loi xay ra");
+							}
+						});
+					},
+					error: function () {
+						alert("Loi xay ra");
+					}
+				});
+			});
+			district.on('change', function () {
+				$.ajax({
+					url: getVillageByDistrict,
+					type: 'GET',
+					dataType: "json",
+					contentType: "application/json",
+					data: { "districtId": district.val() },
+					success: function (data) {
+						village.empty();
+						for (var i = 0; i < data.length; i++) {
+							var $option = $("<option/>", {
+								value: data[i].id,
+								text: data[i].name
+							});
+							village.append($option);
+						}
+					},
+					error: function () {
+						alert("Loi xay ra");
+					}
+				});
+			});
+
+			var url = [[@{/api/createUser}]];
+			var urlSuccess = [[@{/login}]];
+
+			var formData;
+			var userDto = {};
+
+			$('#signup').on('click', function () {
+			    formData = $('#form').serializeArray();
+			    userDto.name = formData[0].value;
+				userDto.phone = formData[1].value;
+				userDto.identity = formData[2].value;
+				userDto.dob = formData[3].value;
+				userDto.gender = formData[4].value;
+				userDto.villageId = formData[7].value;
+				userDto.username = formData[8].value;
+				userDto.password = formData[9].value;
+				$.ajax({
+					url: url,
+					type: 'POST',
+					dataType: "json",
+					contentType: "application/json",
+					data: JSON.stringify(userDto),
+					success: function (data) {
+						alert("Đăng ký thành công, vui lòng đăng nhập");
+						window.location=urlSuccess;
+					},
+					error: function (data) {
+						alert(data.responseJSON.message);
+					}
+				});
+			});
+		</script>
+	</div>
+</body>
+
+</html>

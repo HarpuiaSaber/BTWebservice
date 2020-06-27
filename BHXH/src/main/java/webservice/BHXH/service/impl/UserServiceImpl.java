@@ -21,6 +21,7 @@ import webservice.BHXH.enums.Gender;
 import webservice.BHXH.enums.Role;
 import webservice.BHXH.exception.InternalServerException;
 import webservice.BHXH.model.UserPrincipal;
+import webservice.BHXH.model.dto.ConfigDto;
 import webservice.BHXH.model.dto.UserDto;
 import webservice.BHXH.model.dto.UserPaymentMoneyDto;
 import webservice.BHXH.service.UserService;
@@ -35,11 +36,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private InsuranceDao insuranceDao;
 
     @Override
-    public void add(UserDto t) {
-        User user = toEntity(t);
-        userDao.add(user);
-        t.setId(user.getId());
-
+    public void add(UserDto t) throws InternalServerException {
+        User old = userDao.getByUsername(t.getUsername());
+        if (old == null) {
+            User user = toEntity(t);
+            SupportType supportType = new SupportType();
+            supportType.setId(3L);
+            user.setSupportType(supportType);
+            userDao.add(user);
+            t.setId(user.getId());
+        } else {
+            throw new InternalServerException("Username đã tồn tại");
+        }
     }
 
     @Override
@@ -79,10 +87,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     User toEntity(UserDto dto) {
         User user = new User();
+        user.setId(dto.getId());
         user.setName(dto.getName());
         user.setUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
         user.setGender(Gender.valueOf(dto.getGender()));
+        user.setRole(dto.getRole());
         user.setDob(DateTimeUtils.parseDate(dto.getDob(), DateTimeUtils.DD_MM_YYYY));
         user.setIdentity(dto.getIdentity());
         user.setEnabled(dto.getEnabled());
@@ -140,25 +150,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void setBaseSalary(Long userId, Long baseSalary) throws InternalServerException {
+    public ConfigDto getMyConfig(Long userId) {
+        ConfigDto dto = new ConfigDto();
+        Insurance insurance = insuranceDao.getByUser(userId);
+        dto.setBaseSalary(insurance.getUser().getBaseSalary());
+        dto.setMethodId(insurance.getMethod().getId());
+        return dto;
+    }
+
+    @Override
+    public void setConfig(Long userId, ConfigDto dto) {
         User user = userDao.getById(userId);
-        if (user != null) {
-            //check payment history have record before now
-            //if true: paid set baseSalary
-            //PaymentHistory paymentHistory = paymentHistoryDao.getLatestOfUser(userId);
-//            Insurance insurance = insuranceDao.getByUser(userId);
-//            int month = insurance.getMethod().getMonth();
-//            Date now = new Date();
-//            Date old = new Date(now.getYear(), now.getMonth() - month, now.getDate());
-//            Date latest = paymentHistory.getTime();
-//            if (!latest.before(old)) {
-            user.setBaseSalary(baseSalary);
-//            } else {
-//                throw new InternalServerException("Chưa đóng bảo hiểm trước đó");
-//            }
-        } else {
-            throw new InternalServerException("Không tìm thấy user");
-        }
+        user.setBaseSalary(dto.getBaseSalary());
+        userDao.update(user);
+        Insurance insurance = insuranceDao.getByUser(userId);
+        Method method = new Method();
+        method.setId(dto.getMethodId());
+        insurance.setMethod(method);
+        insuranceDao.update(insurance);
     }
 
     @Override

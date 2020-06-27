@@ -1,6 +1,7 @@
 package webservice.BHXH.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -27,13 +28,15 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Override
     public void add(InsuranceDto t) {
-        // TODO Auto-generated method stub
+        insuranceDao.add(toEntity(t));
 
     }
 
     @Override
     public void update(InsuranceDto t) {
-        // TODO Auto-generated method stub
+        if (insuranceDao.exists(t.getId())) {
+            insuranceDao.update(toEntity(t));
+        }
 
     }
 
@@ -45,8 +48,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Override
     public InsuranceDto getById(Long k) {
-        // TODO Auto-generated method stub
-        return null;
+        return toDto(insuranceDao.getById(k));
     }
 
     @Override
@@ -107,7 +109,26 @@ public class InsuranceServiceImpl implements InsuranceService {
                 + ", " + user.getVillage().getDistrict().getProvince().getName());
         dto.setUser(userDto);
         Method method = insurance.getMethod();
-        dto.setMethod(method.getName());
+        MethodDto methodDto = new MethodDto();
+        methodDto.setId(method.getId());
+        methodDto.setMonth(method.getMonth());
+        methodDto.setName(method.getName());
+        dto.setMethod(methodDto);
         return dto;
+    }
+
+    Insurance toEntity(InsuranceDto dto) {
+        Insurance insurance = new Insurance();
+        insurance.setId(dto.getId());
+        insurance.setRegDate(new Date());
+        UserDto userDto = dto.getUser();
+        User user = new User();
+        user.setId(userDto.getId());
+        insurance.setUser(user);
+        MethodDto methodDto = dto.getMethod();
+        Method method = new Method();
+        method.setId(methodDto.getId());
+        insurance.setMethod(method);
+        return insurance;
     }
 }

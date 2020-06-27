@@ -30,12 +30,17 @@ public class UserController {
     }
 
     @GetMapping("/myInsurance")
-    public String myInsurance(Model model) {
+    public String myInsurance() {
         return "client/user/my-insurance.html";
     }
 
+    @GetMapping("/myConfig")
+    public String myConfig() {
+        return "client/user/my-config.html";
+    }
+
     @GetMapping("/myPaymentHistories")
-    public String myPaymentHistories(Model model) {
+    public String myPaymentHistories() {
         return "client/user/payment-histories.html";
     }
 }

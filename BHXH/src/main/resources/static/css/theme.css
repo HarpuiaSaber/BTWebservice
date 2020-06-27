@@ -1147,6 +1147,12 @@ section {
     border-radius: 2px;
 }
 
+.md-size-list{
+    width:100%;
+    padding:0px;
+    overflow-x:scroll;
+}
+
 .card {
     margin-bottom: 30px;
 }

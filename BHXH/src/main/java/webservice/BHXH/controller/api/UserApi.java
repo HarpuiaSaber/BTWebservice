@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import webservice.BHXH.exception.InternalServerException;
 import webservice.BHXH.model.UserPrincipal;
+import webservice.BHXH.model.dto.ConfigDto;
 import webservice.BHXH.model.dto.ResponseDto;
 import webservice.BHXH.model.dto.UserDto;
 import webservice.BHXH.model.dto.UserPaymentMoneyDto;
@@ -34,14 +35,10 @@ public class UserApi {
     private UserService userService;
 
     @Autowired
-    private PaymentHistoryService paymentHistoryService;
+    private InsuranceService insuranceService;
 
-    @PostMapping("/add")
-    public @ResponseBody
-    UserDto createUser(@RequestBody UserDto dto) {
-        userService.add(dto);
-        return dto;
-    }
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
 
     @PutMapping("/update")
     public @ResponseBody
@@ -56,10 +53,20 @@ public class UserApi {
         return userService.getById(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getMyConfig")
     public @ResponseBody
-    List<UserDto> getAll() {
-        return userService.getAll();
+    ConfigDto getMyConfig() {
+        UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return userService.getMyConfig(currentUser.getId());
+    }
+
+    @PostMapping("/setMyConfig")
+    public @ResponseBody
+    void getMyConfig(@RequestBody ConfigDto dto) {
+        UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        userService.setConfig(currentUser.getId(), dto);
     }
 
     @GetMapping("/getPaymentMoney")
@@ -75,13 +82,6 @@ public class UserApi {
         }
         dtos.add(dto);
         return new ResponseDto<UserPaymentMoneyDto>(1, dtos);
-    }
-
-    @PostMapping("/setBaseSalary")
-    public @ResponseBody
-    void setBaseSalary(@RequestBody Long userId, @RequestBody Long baseSalary)
-            throws InternalServerException {
-        userService.setBaseSalary(userId, baseSalary);
     }
 
 }

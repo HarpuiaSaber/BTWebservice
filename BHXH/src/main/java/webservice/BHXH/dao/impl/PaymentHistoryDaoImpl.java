@@ -7,6 +7,7 @@ import webservice.BHXH.entity.*;
 import webservice.BHXH.model.search.PaymentHistorySearch;
 import webservice.BHXH.utils.DateTimeUtils;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
@@ -35,6 +36,10 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         List<Predicate> predicates = new ArrayList<>();
         if (search.getId() != null) {
             Predicate predicate = criteriaBuilder.equal(root.get("id"), search.getId());
+            predicates.add(predicate);
+        }
+        if (search.getUserId() != null) {
+            Predicate predicate = criteriaBuilder.equal(user.get("id"), search.getUserId());
             predicates.add(predicate);
         }
         if (search.getCode() != null) {
@@ -112,6 +117,10 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         List<Predicate> predicates = new ArrayList<>();
         if (search.getId() != null) {
             Predicate predicate = criteriaBuilder.equal(root.get("id"), search.getId());
+            predicates.add(predicate);
+        }
+        if (search.getUserId() != null) {
+            Predicate predicate = criteriaBuilder.equal(user.get("id"), search.getUserId());
             predicates.add(predicate);
         }
         if (search.getCode() != null) {
@@ -280,6 +289,10 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         typedQuery.setFirstResult(0);
         typedQuery.setMaxResults(1);
 
-        return typedQuery.getSingleResult();
+        try {
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
