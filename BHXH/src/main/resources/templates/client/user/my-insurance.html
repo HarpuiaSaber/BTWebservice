@@ -47,7 +47,6 @@
     <script type="text/javascript" th:inline="javascript">
 
 			var vietnameseUrl = [[@{/vendor/datatables/Vietnamese.json}]];
-			var csrf_token = [[${_csrf.token}]];
 			var url = [[@{/api/user/getMyInsurance}]];
 			var getpaymentmoney = [[@{/api/user/getPaymentMoney}]];
 
@@ -69,7 +68,6 @@
 						url: url,
 						dataType: "json",
 						contentType: "application/json",
-						headers: { 'X-CSRF-TOKEN': csrf_token},
 						data: null
 					},
 					"columns": [
@@ -108,7 +106,6 @@
 						url: getpaymentmoney,
 						dataType: "json",
 						contentType: "application/json",
-						headers: { 'X-CSRF-TOKEN': csrf_token},
 						data: null,
 						error: function (data) {
 							alert(data.responseJSON.message);
@@ -130,7 +127,7 @@
 							"targets": 4,
 							"render": function (data, type, row){
 								if(data == false){
-									return '<form action="/payment/pay" method="post"><button type="submit" name="price" value='+row.totalMoney+' class="btn btn-primary waves-effect waves-light">Thanh toán</button></form>';
+									return '<form action="/user/payViaPalPal" method="post"><button type="submit" name="price" value='+row.totalMoney+' class="btn btn-primary waves-effect waves-light">Thanh toán</button></form>';
 								}
 								return 'Đã thanh toán';
 							}

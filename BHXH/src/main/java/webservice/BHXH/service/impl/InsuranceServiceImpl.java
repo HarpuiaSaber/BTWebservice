@@ -107,6 +107,7 @@ public class InsuranceServiceImpl implements InsuranceService {
         userDto.setVillageId(user.getVillage().getId());
         userDto.setLocation(user.getVillage().getName() + ", " + user.getVillage().getDistrict().getName()
                 + ", " + user.getVillage().getDistrict().getProvince().getName());
+        userDto.setBaseSalary(user.getBaseSalary());
         dto.setUser(userDto);
         Method method = insurance.getMethod();
         MethodDto methodDto = new MethodDto();

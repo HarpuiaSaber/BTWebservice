@@ -14,7 +14,7 @@ public class PaymentHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "insurance_id")
     private Insurance insurance;
 
@@ -25,10 +25,10 @@ public class PaymentHistory implements Serializable {
     private Date startDate;
 
     @Column(name = "transaction_id")
-    private Integer transactionId;
+    private String transactionId;
 
     @JoinColumn(name = "method_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Method method;
 
     @Column(name = "cost")
@@ -75,11 +75,11 @@ public class PaymentHistory implements Serializable {
         this.startDate = startDate;
     }
 
-    public Integer getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 

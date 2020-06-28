@@ -21,6 +21,7 @@ public class UserDto implements Serializable {
     private Role role;
     private String villageId;
     private String location;
+    private Long baseSalary;
 
     public Long getId() {
         return id;
@@ -116,5 +117,13 @@ public class UserDto implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Long getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(Long baseSalary) {
+        this.baseSalary = baseSalary;
     }
 }

@@ -40,7 +40,6 @@
     <script type="text/javascript" th:inline="javascript">
 
 			var url = [[@{/api/user/setMyConfig}]];
-			var csrf_token = [[${_csrf.token}]];
 			var listmethod = [[@{/api/method/getAll}]];
 			var getConfig = [[@{/api/user/getMyConfig}]];
 
@@ -73,11 +72,10 @@
                     type: 'GET',
                     dataType: "json",
                     contentType: "application/json",
-                    headers: { 'X-CSRF-TOKEN': csrf_token},
                     success: function (data) {
                         baseSalary.val(data.baseSalary);
-                        method.val(data.methodId);
-                        method.selectmenu('refresh');
+                        method.val(data.methodId).change();
+                        method.val(data.methodId).change();
                     },
                     error: function (data) {
                         alert("Lỗi xảy ra");
@@ -92,7 +90,6 @@
 					url: url,
 					type: 'POST',
 					contentType: "application/json",
-					headers: { 'X-CSRF-TOKEN': csrf_token},
 					data: JSON.stringify(configDto),
 					success: function () {
 						alert("Cấu hình thành công");

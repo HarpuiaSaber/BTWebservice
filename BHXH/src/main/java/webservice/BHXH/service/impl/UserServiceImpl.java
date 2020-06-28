@@ -1,7 +1,6 @@
 package webservice.BHXH.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -14,11 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import webservice.BHXH.dao.InsuranceDao;
-import webservice.BHXH.dao.PaymentHistoryDao;
 import webservice.BHXH.dao.UserDao;
 import webservice.BHXH.entity.*;
 import webservice.BHXH.enums.Gender;
-import webservice.BHXH.enums.Role;
 import webservice.BHXH.exception.InternalServerException;
 import webservice.BHXH.model.UserPrincipal;
 import webservice.BHXH.model.dto.ConfigDto;
@@ -118,6 +115,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         dto.setVillageId(user.getVillage().getId());
         dto.setLocation(user.getVillage().getName() + ", " + user.getVillage().getDistrict().getName()
                 + ", " + user.getVillage().getDistrict().getProvince().getName());
+        dto.setBaseSalary(user.getBaseSalary());
         return dto;
     }
 

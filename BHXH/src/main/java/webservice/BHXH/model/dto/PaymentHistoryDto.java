@@ -8,7 +8,7 @@ public class PaymentHistoryDto implements Serializable {
     private Long id;
     private InsuranceDto insurance;
     private String time;
-    private Integer transactionId;
+    private String transactionId;
     private MethodDto method;
     private Double cost;
     private Long baseSalary;
@@ -40,11 +40,11 @@ public class PaymentHistoryDto implements Serializable {
         this.time = time;
     }
 
-    public Integer getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 

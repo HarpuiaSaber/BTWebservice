@@ -2,6 +2,7 @@ package webservice.BHXH.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import webservice.BHXH.dao.InsuranceDao;
 import webservice.BHXH.dao.PaymentHistoryDao;
 import webservice.BHXH.entity.Insurance;
 import webservice.BHXH.entity.PaymentHistory;
@@ -23,9 +24,29 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     @Autowired
     private PaymentHistoryDao paymentHistoryDao;
 
+    @Autowired
+    private InsuranceDao insuranceDao;
+
     @Override
     public void add(PaymentHistoryDto t) {
-        // TODO Auto-generated method stub
+        PaymentHistory paymentHistory = toEntity(t);
+        paymentHistory.setTime(new Date());
+        PaymentHistory latest = paymentHistoryDao.getLatest(t.getInsurance().getUser().getId());
+        Insurance insurance = insuranceDao.getByUser(t.getInsurance().getUser().getId());
+        if (latest == null) {
+            paymentHistory.setStartDate(insurance.getRegDate());
+        } else {
+            Date oldStartDate = latest.getStartDate();
+            int oldMonth = latest.getMethod().getMonth() + oldStartDate.getMonth();
+            Date newDate = null;
+            if (oldMonth > 12) {
+                newDate = new Date(oldStartDate.getYear() + 1, oldMonth - 12, oldStartDate.getDate());
+            } else {
+                newDate = new Date(oldStartDate.getYear(), oldMonth, oldStartDate.getDate());
+            }
+            paymentHistory.setStartDate(newDate);
+        }
+        paymentHistoryDao.add(paymentHistory);
 
     }
 
@@ -93,7 +114,7 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
                 oldEndDate = new Date(oldStartDate.getYear(), oldMonth, oldStartDate.getDate());
             }
             Date now = new Date();
-            if (now.before(oldStartDate) && now.before(oldEndDate)) {
+            if (now.after(oldStartDate) && now.before(oldEndDate)) {
                 dto.setPaid(true);
                 dto.setMonth(latest.getMethod().getMonth());
                 dto.setPaymentMoney(latest.getPaymentMoney());
@@ -133,5 +154,22 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
         methodDto.setMonth(method.getMonth());
         dto.setMethod(methodDto);
         return dto;
+    }
+
+    PaymentHistory toEntity(PaymentHistoryDto dto) {
+        PaymentHistory paymentHistory = new PaymentHistory();
+        paymentHistory.setId(dto.getId());
+        paymentHistory.setTransactionId(dto.getTransactionId());
+        Method method = new Method();
+        method.setId(dto.getMethod().getId());
+        paymentHistory.setMethod(method);
+        Insurance insurance = new Insurance();
+        insurance.setId(dto.getInsurance().getId());
+        paymentHistory.setInsurance(insurance);
+        paymentHistory.setBaseSalary(dto.getBaseSalary());
+        paymentHistory.setPaymentMoney(dto.getPaymentMoney());
+        paymentHistory.setSupportMoney(dto.getSupportMoney());
+        paymentHistory.setCost(dto.getCost());
+        return paymentHistory;
     }
 }
