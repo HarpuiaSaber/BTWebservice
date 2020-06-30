@@ -27,21 +27,21 @@
                 <div class="account-wrap">
                     <div class="account-item clearfix js-item-menu">
                         <div class="content">
-                            <a class="js-acc-btn" th:href="@{/user/profile}"
+                            <a class="js-acc-btn" th:href="@{/admin/profile}"
                                sec:authentication="principal.name"></a>
                         </div>
                         <div class="account-dropdown js-dropdown">
                             <div class="info clearfix">
                                 <div class="content">
                                     <h5 class="name">
-                                        <a th:href="@{/user/profile}"
+                                        <a th:href="@{/admin/profile}"
                                            sec:authentication="principal.name"></a>
                                     </h5>
                                 </div>
                             </div>
                             <div class="account-dropdown__body">
                                 <div class="account-dropdown__item">
-                                    <a th:href="@{/user/profile}"> <i
+                                    <a th:href="@{/admin/profile}"> <i
                                             class="zmdi zmdi-account"></i>Thông tin tài khoản
                                     </a>
                                 </div>
