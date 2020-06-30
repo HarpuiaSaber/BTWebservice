@@ -4,77 +4,52 @@
     <header class="header-desktop3 d-none d-lg-block">
         <div class="section__content section__content--p35">
             <div class="header3-wrap">
-                <div class="header__logo">
-                    <a href="/"> <span style="color: #fff; font-weight: bold;">
-							Trang Chủ</span>
-                    </a>
-                </div>
+                <div class="header__logo"></div>
                 <div class="header__navbar">
                     <ul class="list-unstyled">
-                        <li class="has-sub"><a
-                                href="#"> <i class="fas fa-copy"></i> <span
-                                class="bot-line"></span>Tra cứu BHXH
+                        <li class="has-sub"><a th:href=@{/home} style="color: #002677; font-weight: bold;"
+                        > <i class="fa fa-home"></i> <span
+                                class="bot-line"></span>
+                            Trang Chủ
+                        </a>
+                        <li class="has-sub"><a style="color: #002677; font-weight: bold;"
+                        > <i class="fa fa-search"></i> <span
+                                class="bot-line"></span>
+                            Danh sách
                         </a>
                             <ul class="header3-sub-list list-unstyled">
-                                <li><a th:href="@{/admin/storage/list}">Danh sách BHXH</a></li>
-                                <li><a th:href="@{/admin/product/list}">Lịch sử đóng</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-sub"><a
-                                href="#"> <i class="fas fa-user"></i> <span class="bot-line"></span>Quản
-                            lý tài khoản
-                        </a>
-                            <ul class="header3-sub-list list-unstyled">
-                                <li><a th:href="@{/admin/member/list}">Admin</a></li>
-                                <li><a th:href="@{/admin/staff/list}">Khách hàng</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-sub"><a href="#"> <i
-                                class="fas fa-dollar-sign"></i> <span class="bot-line"></span>
-                            Cấu hình
-                        </a>
-                            <ul class="header3-sub-list list-unstyled">
-                                <li><a th:href="@{/admin/fix-cost/list}">Hình thức đóng</a></li>
+                                <li><a th:href="@{/admin/insurance}">Bảo hiểm xã hội tự nguyện</a></li>
+                                <li><a th:href="@{/admin/paymentHistory}">Lịch sử đóng</a></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                <div class="header__tool">
-                    <div class="account-wrap">
-                        <div
-                                class="account-item account-item--style2 clearfix js-item-menu">
-                            <div class="content">
-                                <a class="js-acc-btn" th:href="@{/member/profile}"
-                                   sec:authentication="principal.name"></a>
+                <div class="account-wrap">
+                    <div class="account-item clearfix js-item-menu">
+                        <div class="content">
+                            <a class="js-acc-btn" th:href="@{/user/profile}"
+                               sec:authentication="principal.name"></a>
+                        </div>
+                        <div class="account-dropdown js-dropdown">
+                            <div class="info clearfix">
+                                <div class="content">
+                                    <h5 class="name">
+                                        <a th:href="@{/user/profile}"
+                                           sec:authentication="principal.name"></a>
+                                    </h5>
+                                </div>
                             </div>
-                            <div class="account-dropdown js-dropdown">
-                                <div class="info clearfix">
-                                    <div class="content">
-                                        <h5 class="name">
-                                            <a th:href="@{/member/profile}"
-                                               sec:authentication="principal.name"></a>
-                                        </h5>
-                                        <!--<span class="email"
-                                            th:text="${#authentication.principal.roleId == 1 ? 'ADMIN' : 'Nhân Viên'}"></span>-->
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a th:href="@{/member/profile}"> <i
-                                                class="zmdi zmdi-account"></i>Thông tin tài khoản
-                                        </a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a th:href="@{/member/doi-mat-khau}"> <i
-                                                class="zmdi zmdi-account"></i>Đổi mật khẩu
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__footer">
-                                    <a th:href="@{/dang-xuat}"> <i class="zmdi zmdi-power"></i>Đăng
-                                        xuất
+                            <div class="account-dropdown__body">
+                                <div class="account-dropdown__item">
+                                    <a th:href="@{/user/profile}"> <i
+                                            class="zmdi zmdi-account"></i>Thông tin tài khoản
                                     </a>
                                 </div>
+                            </div>
+                            <div class="account-dropdown__footer">
+                                <a th:href="@{/logout}"> <i class="zmdi zmdi-power"></i>Đăng
+                                    xuất
+                                </a>
                             </div>
                         </div>
                     </div>

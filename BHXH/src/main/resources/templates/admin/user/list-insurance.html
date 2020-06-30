@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="general/common/template">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="admin/common/template">
 
 <head>
     <meta charset="UTF-8"/>
@@ -25,7 +25,6 @@
 					timepicker: true
 				});
 			});
-
     </script>
     <div class="col-md-12">
         <h3 class="title-5 m-b-35">Tra cứu bảo hiểm xã hội</h3>
@@ -105,6 +104,11 @@
             <div class="col-md-3 col-sm-3">
                 <div class="form-group">
                     <button class="btn btn-warning" type="reset" id="reset">Nhập lại</button>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <div class="form-group">
+                    <button class="btn btn-success" type="reset" id="excel">Xuất báo cáo</button>
                 </div>
             </div>
         </div>
@@ -227,21 +231,10 @@
 				$(':input').val('');
 			});
 			lookup.on('click', function(){
-			    searchDto.provinceId = $('#province').val();
-				searchDto.districtId = $('#district').val();
-				searchDto.villageId = $('#village').val();
-				searchDto.identity = $('#identity').val();
-				searchDto.name = $('#name').val();
-				searchDto.dob = $('#dob').val();
-				searchDto.toDate = $('#toDate').val();
-			    searchDto.fromDate = $('#fromDate').val();
-			    if(validate() == true){
 				table = $('#datatable').DataTable({
 					"ordering": false,
 					"searching":false,
-					"paging": false,
 					"destroy": true,
-					"info": false,
 					"autoWidth": false,
 					"processing": true,
 					"serverSide": true,
@@ -251,11 +244,20 @@
 						dataType: "json",
 						contentType: "application/json",
 						data: function (data) {
-			            	searchDto.length = 1;
+							searchDto.provinceId = $('#province').val();
+							searchDto.districtId = $('#district').val();
+							searchDto.villageId = $('#village').val();
+							searchDto.identity = $('#identity').val();
+							searchDto.name = $('#name').val();
+							searchDto.dob = $('#dob').val();
+							searchDto.toDate = $('#toDate').val();
+			            	searchDto.fromDate = $('#fromDate').val();
+			            	searchDto.length = data.length;
 			            	searchDto.start = data.start;
 							return JSON.stringify(searchDto);
 						}
 					},
+					"lengthMenu": [10, 25, 50],
 					"columns": [
 						{ "data": "id", className: "text-right" },
 						{ "data": "user.name" },
@@ -278,18 +280,7 @@
 						})
 					}
 				});
-				}
 			});
-            function validate(){
-                if(searchDto.provinceId == ""){
-                    alert("Phải chọn tỉnh");
-                } else if(searchDto.name == ""){
-                    alert("Phải nhập tên");
-                } else if(searchDto.identity == ""){
-                    alert("Phải nhập chứng minh nhân dân");
-                } else return true;
-                return false;
-            }
     </script>
 </div>
 </body>

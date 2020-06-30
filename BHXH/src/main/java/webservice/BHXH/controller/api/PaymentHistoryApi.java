@@ -29,4 +29,11 @@ public class PaymentHistoryApi {
         return new ResponseDto<PaymentHistoryDto>(paymentHistoryService.countTotal(paymentHistorySearch), dtos.size() + paymentHistorySearch.getStart(), dtos);
     }
 
+    @PostMapping("/admin/paymentHistories/search")
+    public @ResponseBody
+    ResponseDto<PaymentHistoryDto> search(@RequestBody PaymentHistorySearch paymentHistorySearch) {
+        List<PaymentHistoryDto> dtos = paymentHistoryService.searchWithPaging(paymentHistorySearch);
+        return new ResponseDto<PaymentHistoryDto>(paymentHistoryService.countTotal(paymentHistorySearch), dtos.size() + paymentHistorySearch.getStart(), dtos);
+    }
+
 }

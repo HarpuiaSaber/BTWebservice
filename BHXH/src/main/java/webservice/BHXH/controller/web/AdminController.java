@@ -25,4 +25,14 @@ public class AdminController {
         model.addAttribute("userAccountDTO", userDto);
         return "admin/user/profile.html";
     }
+
+    @GetMapping("/insurance")
+    public String insurance() {
+        return "admin/user/list-insurance.html";
+    }
+
+    @GetMapping("/paymentHistory")
+    public String paymentHistory() {
+        return "admin/user/list-payment-history.html";
+    }
 }

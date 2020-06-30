@@ -67,7 +67,7 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         if (StringUtils.isNotBlank(search.getDob())) {
             try {
                 Predicate predicate = criteriaBuilder.equal(user.get("dob"),
-                        DateTimeUtils.parseDate(search.getToDate(), DateTimeUtils.DD_MM_YYYY));
+                        DateTimeUtils.parseDate(search.getDob(), DateTimeUtils.DD_MM_YYYY));
                 predicates.add(predicate);
             } catch (RuntimeException ignored) {
             }
@@ -148,7 +148,7 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         if (StringUtils.isNotBlank(search.getDob())) {
             try {
                 Predicate predicate = criteriaBuilder.equal(user.get("dob"),
-                        DateTimeUtils.parseDate(search.getToDate(), DateTimeUtils.DD_MM_YYYY));
+                        DateTimeUtils.parseDate(search.getDob(), DateTimeUtils.DD_MM_YYYY));
                 predicates.add(predicate);
             } catch (RuntimeException ignored) {
             }
@@ -234,7 +234,7 @@ public class PaymentHistoryDaoImpl extends BaseDaoImpl<PaymentHistory, Long> imp
         if (StringUtils.isNotBlank(search.getDob())) {
             try {
                 Predicate predicate = criteriaBuilder.equal(user.get("dob"),
-                        DateTimeUtils.parseDate(search.getToDate(), DateTimeUtils.DD_MM_YYYY));
+                        DateTimeUtils.parseDate(search.getDob(), DateTimeUtils.DD_MM_YYYY));
                 predicates.add(predicate);
             } catch (RuntimeException ignored) {
             }

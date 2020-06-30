@@ -43,7 +43,6 @@
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Mã BHXH</th>
 							<th>Tên người dùng</th>
 							<th>Ngày bắt đầu</th>
 							<th>Ngày đóng</th>
@@ -84,7 +83,6 @@
 					"lengthMenu": [10, 25, 50],
 					"columns": [
 						{ "data": "id", className: "text-right" },
-						{ "data": "insurance.code", className: "text-left" },
 						{ "data": "insurance.user.name", className: "text-left" },
 						{ "data": "startDate", className: "text-center" },
 						{ "data": "time", className: "text-center" },
@@ -94,7 +92,7 @@
 					],
 					"columnDefs":[
 						{
-							"targets": [6, 7],
+							"targets": [5, 6],
 							"render": $.fn.dataTable.render.number( ',', '.', 2)
 						},
 					],

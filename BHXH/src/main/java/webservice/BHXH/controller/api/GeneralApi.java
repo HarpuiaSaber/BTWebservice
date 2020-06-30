@@ -48,6 +48,6 @@ public class GeneralApi {
     public @ResponseBody
     ResponseDto<InsuranceDto> lookup(@RequestBody InsuranceSearch insuranceSearch) {
         List<InsuranceDto> dtos = insuranceService.searchWithPaging(insuranceSearch);
-        return new ResponseDto<InsuranceDto>(dtos.size(), dtos);
+        return new ResponseDto<InsuranceDto>(insuranceService.countTotal(insuranceSearch), dtos.size() + insuranceSearch.getStart(), dtos);
     }
 }

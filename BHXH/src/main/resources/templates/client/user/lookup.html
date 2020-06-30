@@ -32,22 +32,26 @@
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" text="">Tỉnh/Thành phố</label>: <select name="provinceId"
-							id="province" class="form-control">
-						</select>
+																							 id="province"
+																							 class="form-control">
+						<option value="">-- Chọn tỉnh --</option>
+					</select>
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" text="">Huyện</label>: <select name="districtId" id="district"
-							class="form-control">
-						</select>
+																					class="form-control">
+						<option value="">-- Chọn huyện --</option>
+					</select>
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-3">
 					<div class="form-group">
 						<label class="control-label" text="">Xã</label>: <select name="villageId" id="village"
-							class="form-control">
-						</select>
+																				 class="form-control">
+						<option value="">-- Chọn xã --</option>
+					</select>
 					</div>
 				</div>
 			</div>
@@ -121,6 +125,7 @@
 			var province = $('#province');
 			var district = $('#district');
 			var village = $('#village');
+			$('#province').select2();
 
 			$(document).ready(function () {
 				$.ajax({
@@ -141,44 +146,6 @@
 						alert("Loi xay ra");
 					}
 				});
-				$.ajax({
-					url: getDistrictByProvince,
-					type: 'GET',
-					dataType: "json",
-					contentType: "application/json",
-					data: {"provinceId" : "01" },
-					success: function (data) {
-						for (var i = 0; i < data.length; i++) {
-							var $option = $("<option/>", {
-								value: data[i].id,
-								text: data[i].name
-							});
-							district.append($option);
-						}
-					},
-					error: function () {
-						alert("Loi xay ra");
-					}
-				});
-				$.ajax({
-					url: getVillageByDistrict,
-					type: 'GET',
-					dataType: "json",
-					contentType: "application/json",
-					data: {"districtId" : "001"},
-					success: function (data) {
-						for (var i = 0; i < data.length; i++) {
-							var $option = $("<option/>", {
-								value: data[i].id,
-								text: data[i].name
-							});
-							village.append($option);
-						}
-					},
-					error: function () {
-						alert("Loi xay ra");
-					}
-				});
 			});
 
 			province.on('change', function () {
@@ -190,7 +157,17 @@
 					data: {"provinceId" : province.val()},
 					success: function (data) {
 						district.empty();
+						var $option = $("<option/>", {
+								value: "",
+								text: "-- Chọn huyện --"
+						});
+						district.append($option);
 						village.empty();
+						var $option = $("<option/>", {
+								value: "",
+								text: "-- Chọn xã --"
+						});
+						village.append($option);
 						for (var i = 0; i < data.length; i++) {
 							var $option = $("<option/>", {
 								value: data[i].id,
@@ -198,33 +175,12 @@
 							});
 							district.append($option);
 						}
-						$.ajax({
-							url: getVillageByDistrict,
-							type: 'GET',
-							dataType: "json",
-							contentType: "application/json",
-							data: {"districtId" : data[0].id},
-							success: function (data) {
-								village.empty();
-								for (var i = 0; i < data.length; i++) {
-									var $option = $("<option/>", {
-										value: data[i].id,
-										text: data[i].name
-									});
-									village.append($option);
-								}
-							},
-							error: function () {
-								alert("Loi xay ra");
-							}
-						});
 					},
 					error: function () {
 						alert("Loi xay ra");
 					}
 				});
 			});
-
 			district.on('change', function () {
 				$.ajax({
 					url: getVillageByDistrict,
@@ -234,6 +190,11 @@
 					data: {"districtId": district.val()},
 					success: function (data) {
 						village.empty();
+						var $option = $("<option/>", {
+								value: "",
+								text: "-- Chọn xã --"
+						});
+						village.append($option);
 						for (var i = 0; i < data.length; i++) {
 							var $option = $("<option/>", {
 								value: data[i].id,
@@ -259,6 +220,15 @@
 				$(':input').val('');
 			});
 			lookup.on('click', function(){
+			    searchDto.provinceId = $('#province').val();
+				searchDto.districtId = $('#district').val();
+				searchDto.villageId = $('#village').val();
+				searchDto.identity = $('#identity').val();
+				searchDto.name = $('#name').val();
+				searchDto.dob = $('#dob').val();
+				searchDto.toDate = $('#toDate').val();
+			    searchDto.fromDate = $('#fromDate').val();
+			    if(validate() == true){
 				table = $('#datatable').DataTable({
 					"ordering": false,
 					"searching":false,
@@ -274,14 +244,6 @@
 						dataType: "json",
 						contentType: "application/json",
 						data: function (data) {
-							searchDto.provinceId = $('#province').val();
-							searchDto.districtId = $('#district').val();
-							searchDto.villageId = $('#village').val();
-							searchDto.identity = $('#identity').val();
-							searchDto.name = $('#name').val();
-							searchDto.dob = $('#dob').val();
-							searchDto.toDate = $('#toDate').val();
-			            	searchDto.fromDate = $('#fromDate').val();
 			            	searchDto.length = 1;
 			            	searchDto.start = data.start;
 							return JSON.stringify(searchDto);
@@ -309,7 +271,18 @@
 						})
 					}
 				});
+				}
 			});
+            function validate(){
+                if(searchDto.provinceId == ""){
+                    alert("Phải chọn tỉnh");
+                } else if(searchDto.name == ""){
+                    alert("Phải nhập tên");
+                } else if(searchDto.identity == ""){
+                    alert("Phải nhập chứng minh nhân dân");
+                } else return true;
+                return false;
+            }
 		</script>
 	</div>
 </body>

@@ -35,9 +35,6 @@ public class UserApi {
     private UserService userService;
 
     @Autowired
-    private InsuranceService insuranceService;
-
-    @Autowired
     private PaymentHistoryService paymentHistoryService;
 
     @PutMapping("/update")

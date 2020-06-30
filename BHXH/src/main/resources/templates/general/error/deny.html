@@ -3,21 +3,19 @@
 	layout:decorator="client/common/template">
 <head>
 <meta charset="UTF-8" />
-<title th:text="'Xảy ra lỗi!'"></title>
+<title th:text="'Truy cập bị từ chối'"></title>
 </head>
 <body>
 	<div layout:fragment="content" th:remove="tag">
-		<div class="box bg-sign-in padding ">
-			<div class="sign-in" style="width: 50%">
-				<div class="si-content">
-					<div class="media">
-						<div class="media-body pad">
-							<h4 class="media-heading text-success text-bold">Xảy ra lỗi, vui lòng thử lại!</h4>
-						</div>
+		<section class="s2 s3">
+			<div class="container">
+				<div class="row">
+					<div class="box">
+						<h4 class="text-danger">Truy cập bị từ chối, vui lòng quay lại.</h4>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
 </body>
 </html>

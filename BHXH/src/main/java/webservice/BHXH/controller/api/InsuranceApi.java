@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import webservice.BHXH.model.UserPrincipal;
 import webservice.BHXH.model.dto.InsuranceDto;
 import webservice.BHXH.model.dto.ResponseDto;
+import webservice.BHXH.model.search.InsuranceSearch;
 import webservice.BHXH.service.InsuranceService;
 
 import java.util.ArrayList;
