@@ -68,7 +68,7 @@ public class PaymentController {
 
     @GetMapping("/cancelPayPal")
     public String cancelPay() {
-        return "cancel";
+        return "redirect:/user/myInsurance";
     }
 
     @GetMapping("/successPayPal")

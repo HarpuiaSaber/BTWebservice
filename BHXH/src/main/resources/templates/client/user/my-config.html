@@ -62,25 +62,24 @@
                             });
                             method.append($option);
                         }
+                        $.ajax({
+                            url: getConfig,
+                            type: 'GET',
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (data) {
+                                baseSalary.val(data.baseSalary);
+                                method.val(data.methodId).change();
+                            },
+                            error: function (data) {
+                                alert("Lỗi xảy ra");
+                            }
+                        });
                     },
                     error: function (data) {
                         alert("Lỗi xảy ra");
                     }
                  });
-                $.ajax({
-                    url: getConfig,
-                    type: 'GET',
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (data) {
-                        baseSalary.val(data.baseSalary);
-                        method.val(data.methodId).change();
-                        method.val(data.methodId).change();
-                    },
-                    error: function (data) {
-                        alert("Lỗi xảy ra");
-                    }
-                });
             });
 
 			$('#config').on('click', function () {
