@@ -76,20 +76,29 @@ public class PaymentController {
                                        @RequestParam(name = "token") String token,
                                        @RequestParam(name = "PayerID") String payerId) throws InternalServerException {
 
-        UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        UserPaymentMoneyDto userPaymentMoneyDto = userService.getPaymentMoney(currentUser.getId());
-        PaymentHistoryDto dto = new PaymentHistoryDto();
-        dto.setTransactionId(paymentId);
-        InsuranceDto insuranceDto = insuranceService.getByUser(currentUser.getId());
-        dto.setInsurance(insuranceDto);
-        dto.setMethod(insuranceDto.getMethod());
-        dto.setBaseSalary(insuranceDto.getUser().getBaseSalary());
-        dto.setCost(userPaymentMoneyDto.getTotalMoney());
-        dto.setSupportMoney(userPaymentMoneyDto.getSupportMoney());
-        dto.setPaymentMoney(userPaymentMoneyDto.getPaymentMoney());
-        paymentHistoryService.add(dto);
-        return "redirect:/user/myInsurance";
+        try {
+            Payment payment = paypalService.executePayment(paymentId, payerId);
+            if(payment.getState().equals("approved")){
+                UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal();
+                UserPaymentMoneyDto userPaymentMoneyDto = userService.getPaymentMoney(currentUser.getId());
+                PaymentHistoryDto dto = new PaymentHistoryDto();
+                dto.setTransactionId(paymentId);
+                InsuranceDto insuranceDto = insuranceService.getByUser(currentUser.getId());
+                dto.setInsurance(insuranceDto);
+                dto.setMethod(insuranceDto.getMethod());
+                dto.setBaseSalary(insuranceDto.getUser().getBaseSalary());
+                dto.setCost(userPaymentMoneyDto.getTotalMoney());
+                dto.setSupportMoney(userPaymentMoneyDto.getSupportMoney());
+                dto.setPaymentMoney(userPaymentMoneyDto.getPaymentMoney());
+                paymentHistoryService.add(dto);
+                return "redirect:/user/myInsurance";
+            }
+        } catch (PayPalRESTException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/general/error/error";
 
     }
 
