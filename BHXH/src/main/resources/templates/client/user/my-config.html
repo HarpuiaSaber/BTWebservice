@@ -92,10 +92,12 @@
 					data: JSON.stringify(configDto),
 					success: function () {
 						alert("Cấu hình thành công");
-						location.reload();
+						baseSalary.val(data.baseSalary);
+                        method.val(data.methodId).change();
 					},
 					error: function (data) {
 						alert("Lỗi");
+						location.reload();
 					}
 				});
 			});

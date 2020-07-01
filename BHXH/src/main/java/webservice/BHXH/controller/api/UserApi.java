@@ -60,10 +60,11 @@ public class UserApi {
 
     @PostMapping("/setMyConfig")
     public @ResponseBody
-    void getMyConfig(@RequestBody ConfigDto dto) {
+    ConfigDto getMyConfig(@RequestBody ConfigDto dto) {
         UserPrincipal currentUser = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         userService.setConfig(currentUser.getId(), dto);
+        return dto;
     }
 
     @GetMapping("/getPaymentMoney")
